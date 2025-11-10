@@ -16,6 +16,7 @@ Processes GHMC hourly rainfall data to generate:
 - **Daily rainfall summaries**
 - **Rainfall event detection**
 - **Rainy days statistics**
+- **Custom threshold-based queries**
 """)
 
 # =========================
@@ -43,7 +44,6 @@ if uploaded_file is not None:
     df['Date'] = df['DateTime'].dt.date
     df['Hour'] = df['DateTime'].dt.hour
     df['Month'] = df['DateTime'].dt.month
-
     df['Hourly_Rain'] = pd.to_numeric(df['Hourly_Rain'], errors='coerce').fillna(0)
 
     meta_cols = ['AWS_ID', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']
@@ -109,8 +109,8 @@ if uploaded_file is not None:
     st.subheader("Analysis Completed Successfully!")
     st.write("Below are the generated rainfall summaries:")
 
-    tab1, tab2, tab3 = st.tabs([
-        "Daily Summary", "Rain Events", "Rainy Days Stats"
+    tab1, tab2, tab3, tab4 = st.tabs([
+        "Daily Summary", "Rain Events", "Rainy Days Stats", "Custom Queries"
     ])
 
     with tab1:
@@ -119,6 +119,40 @@ if uploaded_file is not None:
         st.dataframe(events.head(20))
     with tab3:
         st.dataframe(rainy_days.head(20))
+
+    # =========================
+    # CUSTOM QUERY TAB
+    # =========================
+    with tab4:
+        st.markdown("###  Custom Query Section")
+        st.write("Enter thresholds below to explore rainfall characteristics dynamically.")
+
+        # 1 Min hourly rainfall threshold
+        hr_thresh = st.number_input("Enter minimum hourly rainfall threshold (mm)", value=10.0)
+        filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
+        st.write(f"**Number of instances** with hourly rainfall ≥ {hr_thresh} mm: {len(filtered_hr)}")
+        st.dataframe(filtered_hr.head(10))
+
+        # 2 Number of times it rained in each station
+        rain_counts = df[df['Hourly_Rain'] > 0].groupby('AWS_ID').size().reset_index(name='Rain_Hour_Count')
+        st.write("**Number of hours with rainfall at each station**:")
+        st.dataframe(rain_counts)
+
+        # 3 Daily multiple event detection based on gap threshold
+        st.markdown("#### Identify multiple rain events on the same day")
+        gap_thresh = st.number_input("Enter maximum gap (in hours) between two events to consider them separate", value=3)
+
+        df_sorted['TimeDiff'] = df_sorted.groupby('AWS_ID')['DateTime'].diff().dt.total_seconds() / 3600
+        df_sorted['NewEvent'] = (df_sorted['TimeDiff'] > gap_thresh).astype(int)
+        df_sorted['EventGroup'] = df_sorted.groupby('AWS_ID')['NewEvent'].cumsum()
+
+        day_events = df_sorted[df_sorted['Hourly_Rain'] > 0].groupby(['AWS_ID', 'Date']).agg(
+            Num_Events=('EventGroup', 'nunique'),
+            Total_Rain=('Hourly_Rain', 'sum')
+        ).reset_index()
+
+        st.write(f"**Number of rain events per day** (based on {gap_thresh}-hour gap):")
+        st.dataframe(day_events.head(10))
 
     # =========================
     # DOWNLOAD RESULTS
@@ -136,4 +170,4 @@ if uploaded_file is not None:
         st.download_button(" Rainy Days CSV", convert_df(rainy_days), "rainy_days_summary.csv", "text/csv")
 
 else:
-    st.info("👆 Please upload a CSV file to begin the analysis.")
+    st.info("Please upload a CSV file to begin the analysis.")
