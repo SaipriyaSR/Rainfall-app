@@ -269,17 +269,6 @@ if show_plots:
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-    st.markdown("###  Monthly Rainfall Aggregation")
-    monthly_rain = daily.groupby(["AWS_ID", "Year", "Month"])["Daily_Rainfall"].sum().reset_index()
-    fig3 = px.bar(
-        monthly_rain[monthly_rain["AWS_ID"] == station_choice],
-        x="Month",
-        y="Daily_Rainfall",
-        color="Year",
-        barmode="group",
-        title=f"Monthly Rainfall Distribution - {station_choice}"
-    )
-    st.plotly_chart(fig3, use_container_width=True)
 
     st.markdown("###  Spatial Distribution of Rainfall (Map)")
     # Aggregate mean rainfall for each station
