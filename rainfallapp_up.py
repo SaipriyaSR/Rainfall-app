@@ -11,7 +11,7 @@ st.title(" GHMC Rainfall Analysis Dashboard")
 
 st.markdown("""
 This interactive dashboard allows you to explore **hourly GHMC rainfall data**  
-and generate rainfall summaries, rainfall event statistics, and threshold-based queries with plots.
+and generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.
 """)
 
 # =========================
@@ -25,16 +25,14 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
-    # Rename key columns
+    # Rename and preprocess
     df.rename(columns={
         'Hourly__Rainfall_(mm)': 'Hourly_Rain',
         'Day_Cumulative__Rainfall_(mm)': 'Day_CumRain'
     }, inplace=True, errors='ignore')
 
-    # Parse datetime
     df['DateTime'] = pd.to_datetime(df['Date_&_Time'], format='%d-%m-%Y %H:%M', errors='coerce')
     df.dropna(subset=['DateTime'], inplace=True)
-
     df['Date'] = df['DateTime'].dt.date
     df['Month'] = df['DateTime'].dt.month
     df['Year'] = df['DateTime'].dt.year
@@ -43,7 +41,7 @@ if uploaded_file is not None:
     meta_cols = ['AWS_ID', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']
 
     # =========================
-    # DATA PROCESSING
+    # AGGREGATED DATASETS
     # =========================
     daily = df.groupby(meta_cols + ['Date']).agg(
         Daily_Rainfall=('Hourly_Rain', 'sum'),
@@ -53,7 +51,6 @@ if uploaded_file is not None:
     daily['Daily_Intensity'] = daily.apply(lambda x: x['Daily_Rainfall'] / x['Hours_Rained']
                                            if x['Hours_Rained'] > 0 else 0, axis=1)
 
-    # Rain events
     df_sorted = df.sort_values(['AWS_ID', 'DateTime']).copy()
     df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
     df_sorted['EventStart'] = (df_sorted['RainFlag'].diff().fillna(0) == 1).astype(int)
@@ -69,24 +66,18 @@ if uploaded_file is not None:
     events['Average_Intensity'] = events['Total_Rain'] / events['Duration_hrs']
 
     # =========================
-    # TABS LAYOUT
+    # MAIN TABS
     # =========================
-    tab1, tab2, tab3 = st.tabs([" Data Summary", " Custom Queries", " Visualization"])
+    tab1, tab2, tab3 = st.tabs([" Data Summary", "Custom Queries", " Visualization"])
 
     # =========================
-    # TAB 1: DATA SUMMARY
+    # TAB 1 - DATA SUMMARY
     # =========================
     with tab1:
-        st.header(" Rainfall Summary")
+        st.subheader(" Rainfall Summary")
+        summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
 
-        summary_option = st.radio(
-            "Select summary type:",
-            ["Daily Rainfall Summary", "Rain Events Summary"],
-            horizontal=True
-        )
-
-        # Layout with 2 columns: input + plot side-by-side
-        col1, col2 = st.columns([1.2, 1])
+        col1, col2 = st.columns([1.3, 1])
 
         with col1:
             if summary_option == "Daily Rainfall Summary":
@@ -95,6 +86,7 @@ if uploaded_file is not None:
                     filtered_daily = daily[daily['Daily_Rainfall'] >= daily_threshold]
                     st.success(f"Days with rainfall ≥ {daily_threshold} mm: {len(filtered_daily)}")
                     st.dataframe(filtered_daily)
+
             else:
                 event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=30.0)
                 if st.button("Show Event Summary"):
@@ -104,116 +96,117 @@ if uploaded_file is not None:
 
         with col2:
             st.markdown("####  Quick Visualization")
-            plot_type = st.selectbox("Select plot type:", ["Bar", "Line", "Histogram"])
+            plot_type = st.selectbox("Select plot type:", ["Box", "Bar", "Line", "Spatial Map"])
 
             if summary_option == "Daily Rainfall Summary" and 'filtered_daily' in locals():
-                if plot_type == "Line":
-                    fig = px.line(filtered_daily, x="Date", y="Daily_Rainfall", color="AWS_ID",
-                                  title="Daily Rainfall Trend")
+                if plot_type == "Box":
+                    fig = px.box(filtered_daily, x="Month", y="Daily_Rainfall", color="AWS_ID",
+                                 title="Monthly Rainfall Distribution")
                 elif plot_type == "Bar":
-                    fig = px.bar(filtered_daily, x="AWS_ID", y="Daily_Rainfall",
-                                 title="Daily Rainfall per Station")
+                    fig = px.bar(filtered_daily, x="AWS_ID", y="Daily_Rainfall", color="Month",
+                                 title="Rainfall by Station and Month")
+                elif plot_type == "Line":
+                    fig = px.line(filtered_daily, x="Date", y="Daily_Rainfall", color="AWS_ID",
+                                  title="Daily Rainfall Trends")
                 else:
-                    fig = px.histogram(filtered_daily, x="Daily_Rainfall", nbins=20,
-                                       title="Distribution of Daily Rainfall")
+                    spatial_avg = filtered_daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
+                    fig = px.scatter_mapbox(spatial_avg, lat="Latitude", lon="Longitude", color="Daily_Rainfall",
+                                            size="Daily_Rainfall", hover_name="AWS_ID", mapbox_style="open-street-map",
+                                            color_continuous_scale="Blues", title="Spatial Distribution of Daily Rainfall")
                 st.plotly_chart(fig, use_container_width=True)
 
             elif summary_option == "Rain Events Summary" and 'filtered_events' in locals():
-                if plot_type == "Line":
-                    fig = px.line(filtered_events, x="Start", y="Total_Rain", color="AWS_ID",
-                                  title="Event Rainfall Over Time")
+                if plot_type == "Box":
+                    fig = px.box(filtered_events, x="AWS_ID", y="Average_Intensity",
+                                 title="Event Intensity Distribution Across Stations")
                 elif plot_type == "Bar":
                     fig = px.bar(filtered_events, x="AWS_ID", y="Total_Rain",
-                                 title="Total Rain per Station")
+                                 title="Total Event Rainfall by Station")
+                elif plot_type == "Line":
+                    fig = px.line(filtered_events, x="Start", y="Total_Rain", color="AWS_ID",
+                                  title="Temporal Evolution of Events")
                 else:
-                    fig = px.histogram(filtered_events, x="Total_Rain", nbins=20,
-                                       title="Distribution of Event Rainfall")
+                    spatial_ev = filtered_events.groupby(["AWS_ID", "Latitude", "Longitude"])["Total_Rain"].mean().reset_index()
+                    fig = px.scatter_mapbox(spatial_ev, lat="Latitude", lon="Longitude", color="Total_Rain",
+                                            size="Total_Rain", hover_name="AWS_ID", mapbox_style="open-street-map",
+                                            color_continuous_scale="Blues", title="Spatial Distribution of Rain Events")
                 st.plotly_chart(fig, use_container_width=True)
 
     # =========================
-    # TAB 2: CUSTOM QUERIES
+    # TAB 2 - CUSTOM QUERIES
     # =========================
     with tab2:
-        st.header(" Threshold-Based Queries")
+        st.subheader(" Threshold-Based Queries")
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            hr_thresh = st.number_input("Hourly rainfall (mm):", value=10.0)
-        with col2:
-            daily_thresh = st.number_input("Daily rainfall (mm):", value=50.0)
-        with col3:
-            duration_thresh = st.number_input("Event duration (hours):", value=5)
-
-        if st.button("Run Queries"):
-            filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
-            high_daily = daily[daily["Daily_Rainfall"] >= daily_thresh]
-            long_events = events[events["Duration_hrs"] >= duration_thresh]
-
-            col_a, col_b = st.columns([1.2, 1])
-            with col_a:
-                st.markdown("### Results")
-                st.write(f" Hourly ≥ {hr_thresh} mm → {len(filtered_hr)} records")
+        # Independent query sections
+        with st.expander(" Hourly Rainfall Threshold Query"):
+            hr_thresh = st.number_input("Enter hourly rainfall threshold (mm):", value=10.0, key="hourly_q")
+            if st.button("Run Hourly Query"):
+                filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
+                st.write(f"Records ≥ {hr_thresh} mm/hour: {len(filtered_hr)}")
                 st.dataframe(filtered_hr.head(10))
-                st.write(f" Daily ≥ {daily_thresh} mm → {len(high_daily)} days")
-                st.dataframe(high_daily.head(10))
-                st.write(f" Duration ≥ {duration_thresh} hrs → {len(long_events)} events")
-                st.dataframe(long_events.head(10))
+                fig = px.histogram(filtered_hr, x="Hourly_Rain", nbins=30, title="Distribution of Hourly Rainfall")
+                st.plotly_chart(fig, use_container_width=True)
 
-            with col_b:
-                st.markdown("### Visualization")
-                plot_sel = st.selectbox("Plot type:", ["Scatter", "Box", "Histogram"])
-                if plot_sel == "Scatter":
-                    fig = px.scatter(long_events, x="Duration_hrs", y="Average_Intensity",
-                                     color="AWS_ID", size="Total_Rain",
-                                     title="Duration vs Intensity of Events")
-                elif plot_sel == "Box":
-                    fig = px.box(high_daily, x="AWS_ID", y="Daily_Rainfall",
-                                 title="Boxplot of Daily Rainfall by Station")
-                else:
-                    fig = px.histogram(filtered_hr, x="Hourly_Rain", nbins=30,
-                                       title="Distribution of Hourly Rainfall")
+        with st.expander(" Daily Rainfall Threshold Query"):
+            daily_thresh = st.number_input("Enter daily rainfall threshold (mm):", value=50.0, key="daily_q")
+            if st.button("Run Daily Query"):
+                high_daily = daily[daily["Daily_Rainfall"] >= daily_thresh]
+                st.write(f"Days ≥ {daily_thresh} mm/day: {len(high_daily)}")
+                st.dataframe(high_daily.head(10))
+                fig = px.box(high_daily, x="AWS_ID", y="Daily_Rainfall", color="AWS_ID",
+                             title="Boxplot of Daily Rainfall Across Stations")
+                st.plotly_chart(fig, use_container_width=True)
+
+        with st.expander(" Event Duration Query"):
+            duration_thresh = st.number_input("Enter event duration threshold (hours):", value=5, key="event_q")
+            if st.button("Run Event Duration Query"):
+                long_events = events[events["Duration_hrs"] >= duration_thresh]
+                st.write(f"Events ≥ {duration_thresh} hours: {len(long_events)}")
+                st.dataframe(long_events.head(10))
+                fig = px.scatter(long_events, x="Duration_hrs", y="Average_Intensity",
+                                 color="AWS_ID", size="Total_Rain", hover_data=["Start", "End"],
+                                 title="Duration vs Intensity of Events")
                 st.plotly_chart(fig, use_container_width=True)
 
     # =========================
-    # TAB 3: VISUALIZATION
+    # TAB 3 - VISUALIZATION PANEL
     # =========================
     with tab3:
-        st.header(" Visualization Panel")
+        st.subheader(" Advanced Visualizations")
 
-        st.markdown("Select visualization type:")
-        plot_option = st.selectbox(
-            "Choose visualization:",
-            ["Daily Rainfall Trend", "Event Intensity vs Duration", "Spatial Distribution"]
-        )
+        vis_option = st.selectbox("Select visualization type:", [
+            "Daily Rainfall Trend (Station-wise)",
+            "Monthly Intensity Boxplot",
+            "Event Duration vs Total Rain",
+            "Spatial Distribution (Average Rainfall)"
+        ])
 
-        station_choice = st.selectbox("Select AWS station:", sorted(daily["AWS_ID"].unique()))
-
-        if plot_option == "Daily Rainfall Trend":
+        if vis_option == "Daily Rainfall Trend (Station-wise)":
+            station_choice = st.selectbox("Select AWS station:", sorted(daily["AWS_ID"].unique()))
             df_station = daily[daily["AWS_ID"] == station_choice]
-            fig = px.line(df_station, x="Date", y="Daily_Rainfall",
-                          title=f"Daily Rainfall Trend - {station_choice}",
-                          labels={'Daily_Rainfall': 'Rainfall (mm)'})
+            fig = px.line(df_station, x="Date", y="Daily_Rainfall", title=f"Daily Rainfall - {station_choice}")
             st.plotly_chart(fig, use_container_width=True)
 
-        elif plot_option == "Event Intensity vs Duration":
-            fig = px.scatter(events[events["AWS_ID"] == station_choice],
-                             x="Duration_hrs", y="Average_Intensity",
-                             color="Total_Rain", size="Total_Rain",
-                             hover_data=["Start", "End"],
-                             title=f"Event Duration vs Intensity - {station_choice}",
-                             labels={"Duration_hrs": "Duration (hrs)", "Average_Intensity": "Avg Intensity (mm/hr)"})
+        elif vis_option == "Monthly Intensity Boxplot":
+            fig = px.box(daily, x="Month", y="Daily_Intensity", color="AWS_ID",
+                         title="Monthly Distribution of Daily Intensity")
+            st.plotly_chart(fig, use_container_width=True)
+
+        elif vis_option == "Event Duration vs Total Rain":
+            fig = px.scatter(events, x="Duration_hrs", y="Total_Rain", color="AWS_ID",
+                             size="Average_Intensity", hover_data=["Start", "End"],
+                             title="Event Duration vs Total Rainfall")
             st.plotly_chart(fig, use_container_width=True)
 
         else:
             spatial_avg = daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
-            fig_map = px.scatter_mapbox(
-                spatial_avg, lat="Latitude", lon="Longitude",
-                color="Daily_Rainfall", size="Daily_Rainfall",
-                hover_name="AWS_ID", color_continuous_scale="Blues",
-                mapbox_style="open-street-map", zoom=9,
-                title="Average Daily Rainfall Across AWS Stations"
-            )
-            st.plotly_chart(fig_map, use_container_width=True)
+            fig = px.scatter_mapbox(spatial_avg, lat="Latitude", lon="Longitude",
+                                    color="Daily_Rainfall", size="Daily_Rainfall",
+                                    hover_name="AWS_ID", color_continuous_scale="Blues",
+                                    mapbox_style="open-street-map", zoom=9,
+                                    title="Spatial Distribution of Average Daily Rainfall")
+            st.plotly_chart(fig, use_container_width=True)
 
 else:
-    st.info("Please upload a CSV file to start the analysis.")
+    st.info(" Please upload a CSV file to start the analysis.")
