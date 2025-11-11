@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # APP CONFIG
 # =========================
 st.set_page_config(page_title="GHMC Rainfall Dashboard", layout="wide")
-st.title("🌧️ GHMC Rainfall Analysis Dashboard")
+st.title(" GHMC Rainfall Analysis Dashboard")
 
 st.markdown("""
 This interactive tool allows you to analyze **hourly GHMC rainfall data**  
@@ -18,10 +18,10 @@ and generate rainfall summaries, rainfall event statistics, and threshold-based 
 # =========================
 # FILE UPLOAD
 # =========================
-uploaded_file = st.file_uploader("📂 Upload hourly rainfall CSV file", type=['csv'])
+uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
 if uploaded_file is not None:
-    st.success("✅ File uploaded successfully!")
+    st.success(" File uploaded successfully!")
 
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
@@ -70,13 +70,13 @@ if uploaded_file is not None:
     # =========================
     # TABS LAYOUT
     # =========================
-    tab1, tab2, tab3 = st.tabs(["📊 Data Summary", "🔍 Custom Queries", "🌎 Visualization"])
+    tab1, tab2, tab3 = st.tabs([" Data Summary", " Custom Queries", " Visualization"])
 
     # =========================
     # TAB 1: DATA SUMMARY
     # =========================
     with tab1:
-        st.header("📅 Rainfall Summary")
+        st.header(" Rainfall Summary")
 
         st.markdown("Select type of summary to view:")
 
@@ -101,7 +101,7 @@ if uploaded_file is not None:
     # TAB 2: CUSTOM QUERIES
     # =========================
     with tab2:
-        st.header("🧮 Threshold-Based Queries")
+        st.header("Threshold-Based Queries")
 
         st.markdown("Enter rainfall thresholds to explore significant events:")
         col1, col2, col3 = st.columns(3)
@@ -132,7 +132,7 @@ if uploaded_file is not None:
     # TAB 3: VISUALIZATION
     # =========================
     with tab3:
-        st.header("📍 Rainfall Visualizations")
+        st.header(" Rainfall Visualizations")
 
         st.markdown("Select plot type:")
         plot_option = st.selectbox(
