@@ -134,29 +134,50 @@ if uploaded_file is not None:
     # CUSTOM QUERIES SECTION
     # =========================
     st.markdown("---")
-    st.subheader("🔍 Custom Queries")
+    st.subheader(" Custom Queries")
+    #  Threshold-Based Queries
+    # =========================
+    st.markdown("###  Threshold-Based Queries")
 
-    with st.expander(" Threshold-based Filters", expanded=True):
-        hr_thresh = st.number_input("Hourly rainfall threshold (mm)", value=10.0)
-        daily_thresh = st.number_input("Daily rainfall threshold (mm)", value=50.0)
-        max_rain_thresh = st.number_input("Max hourly rainfall threshold (mm)", value=40.0)
-        long_event_thresh = st.number_input("Event duration threshold (hours)", value=5)
+    # --- Hourly Rainfall Threshold ---
+    st.markdown("####  Hourly Rainfall Threshold")
+    hr_thresh = st.number_input("Enter hourly rainfall threshold (mm):", value=10.0, key="hr_thresh")
+    filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
+    st.write(f"**Records with hourly rainfall ≥ {hr_thresh} mm:** {len(filtered_hr)}")
+    st.dataframe(filtered_hr.head(10))
+    st.divider()
 
-        filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
-        st.write(f"**Hourly rainfall ≥ {hr_thresh} mm:** {len(filtered_hr)} records")
-        st.dataframe(filtered_hr.head(10))
+    # --- Daily Rainfall Threshold ---
+    st.markdown("####  Daily Rainfall Threshold")
+    daily_thresh = st.number_input("Enter daily rainfall threshold (mm):", value=50.0, key="daily_thresh")
+    high_rain_days = daily[daily["Daily_Rainfall"] >= daily_thresh]
+    st.write(f"**Days with daily rainfall ≥ {daily_thresh} mm:** {len(high_rain_days)}")
+    st.dataframe(high_rain_days.head(10))
+    st.divider()
 
-        high_rain_days = daily[daily["Daily_Rainfall"] >= daily_thresh]
-        st.write(f"**Days with daily rainfall ≥ {daily_thresh} mm:** {len(high_rain_days)}")
-        st.dataframe(high_rain_days.head(10))
+    # --- Max Hourly Rain Threshold ---
+    st.markdown("####  Event Maximum Hourly Rainfall Threshold")
+    max_rain_thresh = st.number_input("Enter max hourly rainfall threshold (mm):", value=40.0, key="max_rain_thresh")
+    high_intensity_events = events[events["Max_Hourly"] >= max_rain_thresh]
+    st.write(f"**Events with maximum hourly rainfall ≥ {max_rain_thresh} mm:** {len(high_intensity_events)}")
+    st.dataframe(high_intensity_events.head(10))
+    st.divider()
 
-        high_intensity_events = events[events["Max_Hourly"] >= max_rain_thresh]
-        st.write(f"**Events with max hourly rainfall ≥ {max_rain_thresh} mm:** {len(high_intensity_events)}")
-        st.dataframe(high_intensity_events.head(10))
+    # --- Long Event Duration ---
+    st.markdown("####  Event Duration Threshold")
+    long_event_thresh = st.number_input("Enter event duration threshold (hours):", value=5, key="long_event_thresh")
+    long_events = events[events["Duration_hrs"] >= long_event_thresh]
+    st.write(f"**Events lasting ≥ {long_event_thresh} hours:** {len(long_events)}")
+    st.dataframe(long_events.head(10))
+    st.divider()
 
-        long_events = events[events["Duration_hrs"] >= long_event_thresh]
-        st.write(f"**Events lasting ≥ {long_event_thresh} hours:** {len(long_events)}")
-        st.dataframe(long_events.head(10))
+    # --- Average Intensity Threshold ---
+    st.markdown("####  Average Event Intensity Threshold")
+    intensity_thresh = st.number_input("Enter average intensity threshold (mm/hr):", value=5.0, key="intensity_thresh")
+    intense_events = events[events["Average_Intensity"] >= intensity_thresh]
+    st.write(f"**Events with average intensity ≥ {intensity_thresh} mm/hr:** {len(intense_events)}")
+    st.dataframe(intense_events.head(10))
+    st.divider()
 
     with st.expander(" Spatial / Temporal Filters"):
         station_sel = st.multiselect("Select Station(s):", sorted(df["AWS_ID"].unique()))
