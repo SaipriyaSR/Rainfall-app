@@ -208,8 +208,7 @@ if uploaded_file is not None:
                                     title="Spatial Distribution of Average Daily Rainfall")
             st.plotly_chart(fig, use_container_width=True)
 
-else:
-    st.info(" Please upload a CSV file to start the analysis.")
+
  # =========================
 # ADDITIONAL STATION ANALYSIS
 # =========================
@@ -288,3 +287,5 @@ monthly_intensity['Month'] = monthly_intensity['Start'].dt.month
 fig = px.box(monthly_intensity, x="Month", y="Average_Intensity", color_discrete_sequence=["#009E73"],
                 title=f"Monthly Distribution of Event Intensities - {station_select}")
 st.plotly_chart(fig, use_container_width=True)
+else:
+    st.info(" Please upload a CSV file to start the analysis.")
