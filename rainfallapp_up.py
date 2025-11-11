@@ -17,6 +17,8 @@ generate rainfall summaries, rainfall event statistics, and threshold-based quer
 # =========================
 # FILE UPLOAD
 # =========================
+# Upload section
+st.sidebar.header("Upload Data")
 uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
 if uploaded_file is not None:
@@ -24,7 +26,10 @@ if uploaded_file is not None:
 
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
-
+    # Check basic structure
+    st.write("### Data Preview")
+    st.dataframe(df.head())
+    
     # Rename and preprocess
     df.rename(columns={
         'Hourly__Rainfall_(mm)': 'Hourly_Rain',
