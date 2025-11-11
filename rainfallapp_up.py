@@ -18,7 +18,7 @@ generate rainfall summaries, rainfall event statistics, and threshold-based quer
 # FILE UPLOAD
 # =========================
 # Upload section
-st.sidebar.header("Upload Data")
+st.sidebar.header("Rainfall Analysis Dashboard\n\n This interactive dashboard allows you to explore **hourly GHMC rainfall data**, generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.\n\nUpload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)', 'Day_Cumulative__Rainfall_(mm)'")
 uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
 if uploaded_file is not None:
@@ -29,7 +29,7 @@ if uploaded_file is not None:
     # Check basic structure
     st.write("### Data Preview")
     st.dataframe(df.head())
-    
+
     # Rename and preprocess
     df.rename(columns={
         'Hourly__Rainfall_(mm)': 'Hourly_Rain',
