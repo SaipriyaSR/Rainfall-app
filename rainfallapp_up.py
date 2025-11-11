@@ -43,7 +43,7 @@ if uploaded_file is not None:
     # =========================
     # AGGREGATED DATASETS
     # =========================
-    daily = df.groupby(meta_cols + ['Date']).agg(
+    daily = df.groupby(meta_cols + ['Year', 'Month','Date']).agg(
         Daily_Rainfall=('Hourly_Rain', 'sum'),
         Max_Hourly_Rain=('Hourly_Rain', 'max'),
         Hours_Rained=('Hourly_Rain', lambda x: (x > 0).sum())
