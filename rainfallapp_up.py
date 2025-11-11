@@ -7,7 +7,7 @@ import plotly.express as px
 # APP CONFIG
 # =========================
 st.set_page_config(page_title="GHMC Rainfall Dashboard", layout="wide")
-st.title(" GHMC Rainfall Analysis Dashboard")
+st.title(" GHMC Rainfall Analysis ")
 
 #st.markdown("""
 #This interactive dashboard allows you to explore **hourly GHMC rainfall data**,  
@@ -18,7 +18,7 @@ st.title(" GHMC Rainfall Analysis Dashboard")
 # FILE UPLOAD
 # =========================
 # Upload section
-st.sidebar.header("***Rainfall Analysis Dashboard***\n\n This interactive dashboard allows you to explore **hourly GHMC rainfall data**, generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.\n\n Upload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)', 'Day_Cumulative__Rainfall_(mm)'")
+st.sidebar.header("***Rainfall Analysis Tool***\n\n This interactive dashboard allows you to explore **hourly GHMC rainfall data**, generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.\n\n Upload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)', 'Day_Cumulative__Rainfall_(mm)'")
 uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
 if uploaded_file is not None:
