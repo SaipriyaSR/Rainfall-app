@@ -8,11 +8,15 @@ from io import BytesIO
 # STREAMLIT APP CONFIG
 # =========================
 st.set_page_config(page_title="Rainfall Analysis App", layout="wide")
-st.title("GHMC Rainfall Analysis Dashboard")
-st.write("Upload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)', 'Day_Cumulative__Rainfall_(mm)'")
+st.title(" GHMC Rainfall Analysis Dashboard")
+st.write("""
+Upload hourly rainfall dataset (CSV) with columns:
+'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle',
+'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)', 'Day_Cumulative__Rainfall_(mm)'.
+""")
 
 st.write("""
-Processes GHMC hourly rainfall data to generate:
+This app processes GHMC hourly rainfall data to generate:
 - **Daily rainfall summaries**
 - **Rainfall event detection**
 - **Rainy days statistics**
@@ -22,18 +26,17 @@ Processes GHMC hourly rainfall data to generate:
 # =========================
 # FILE UPLOAD SECTION
 # =========================
-uploaded_file = st.file_uploader("Upload hourly rainfall CSV file", type=['csv'])
+uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
 if uploaded_file is not None:
-    st.success("File uploaded successfully!")
-    
-    # Read data
-    df = pd.read_csv(uploaded_file)
+    st.success(" File uploaded successfully!")
 
     # =========================
-    # PREPROCESS DATA
+    # READ & PREPROCESS DATA
     # =========================
+    df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
+
     if 'Hourly__Rainfall_(mm)' in df.columns:
         df.rename(columns={'Hourly__Rainfall_(mm)': 'Hourly_Rain'}, inplace=True)
     if 'Day_Cumulative__Rainfall_(mm)' in df.columns:
@@ -90,8 +93,7 @@ if uploaded_file is not None:
     ).reset_index()
 
     def longest_wet_spell(series):
-        c = 0
-        max_c = 0
+        c = max_c = 0
         for val in series:
             if val == 1:
                 c += 1
@@ -106,68 +108,72 @@ if uploaded_file is not None:
     # =========================
     # DISPLAY RESULTS
     # =========================
-    st.subheader("Analysis Completed Successfully!")
-    st.write("Below are the generated rainfall summaries:")
+    st.subheader(" Analysis Results")
 
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "Daily Summary", "Rain Events", "Rainy Days Stats", "Custom Queries"
-    ])
+    # Row selection
+    row_option = st.radio("Select number of rows to display:", ("10", "50", "All"), horizontal=True)
+    nrows = None if row_option == "All" else int(row_option)
+
+    tab1, tab2, tab3, tab4 = st.tabs(["Daily Summary", "Rain Events", "Rainy Days Stats", "Custom Queries"])
 
     with tab1:
-        st.dataframe(daily.head(20))
+        st.write("###  Daily Summary")
+        st.dataframe(daily.head(nrows))
+
     with tab2:
-        st.dataframe(events.head(20))
+        st.write("###  Rain Events")
+        st.dataframe(events.head(nrows))
+
     with tab3:
-        st.dataframe(rainy_days.head(20))
+        st.write("###  Rainy Days Statistics")
+        st.dataframe(rainy_days.head(nrows))
 
     # =========================
-    # CUSTOM QUERY TAB
+    # CUSTOM QUERIES TAB
     # =========================
     with tab4:
         st.markdown("###  Custom Query Section")
-        st.write("Enter thresholds below to explore rainfall characteristics dynamically.")
+        st.write("Filter rainfall data dynamically below:")
 
-        # 1 Min hourly rainfall threshold
-        hr_thresh = st.number_input("Enter minimum hourly rainfall threshold (mm)", value=10.0)
+        hr_thresh = st.number_input("Hourly rainfall threshold (mm)", value=10.0)
         filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
-        st.write(f"**Number of instances** with hourly rainfall ≥ {hr_thresh} mm: {len(filtered_hr)}")
-        st.dataframe(filtered_hr.head(10))
+        st.write(f"Instances with hourly rainfall ≥ {hr_thresh} mm: {len(filtered_hr)}")
+        st.dataframe(filtered_hr.head(nrows))
 
-        # 2 Number of times it rained in each station
+        daily_thresh = st.number_input("Daily rainfall threshold (mm)", value=50.0)
+        high_rain_days = daily[daily["Daily_Rainfall"] >= daily_thresh]
+        st.write(f"Days with daily rainfall ≥ {daily_thresh} mm: {len(high_rain_days)}")
+        st.dataframe(high_rain_days.head(nrows))
+
+        max_rain_thresh = st.number_input("Max hourly rainfall threshold (mm)", value=40.0)
+        high_intensity_events = events[events["Max_Hourly"] >= max_rain_thresh]
+        st.write(f"Events with max hourly rainfall ≥ {max_rain_thresh} mm: {len(high_intensity_events)}")
+        st.dataframe(high_intensity_events.head(nrows))
+
+        long_event_thresh = st.number_input("Event duration threshold (hours)", value=5)
+        long_events = events[events["Duration_hrs"] >= long_event_thresh]
+        st.write(f"Events lasting ≥ {long_event_thresh} hours: {len(long_events)}")
+        st.dataframe(long_events.head(nrows))
+
         rain_counts = df[df['Hourly_Rain'] > 0].groupby('AWS_ID').size().reset_index(name='Rain_Hour_Count')
-        st.write("**Number of hours with rainfall at each station**:")
-        st.dataframe(rain_counts)
-
-        # 3 Daily multiple event detection based on gap threshold
-        st.markdown("#### Identify multiple rain events on the same day")
-        gap_thresh = st.number_input("Enter maximum gap (in hours) between two events to consider them separate", value=3)
-
-        df_sorted['TimeDiff'] = df_sorted.groupby('AWS_ID')['DateTime'].diff().dt.total_seconds() / 3600
-        df_sorted['NewEvent'] = (df_sorted['TimeDiff'] > gap_thresh).astype(int)
-        df_sorted['EventGroup'] = df_sorted.groupby('AWS_ID')['NewEvent'].cumsum()
-
-        day_events = df_sorted[df_sorted['Hourly_Rain'] > 0].groupby(['AWS_ID', 'Date']).agg(
-            Num_Events=('EventGroup', 'nunique'),
-            Total_Rain=('Hourly_Rain', 'sum')
-        ).reset_index()
-
-        st.write(f"**Number of rain events per day** (based on {gap_thresh}-hour gap):")
-        st.dataframe(day_events.head(10))
+        st.write("**Total hours of rainfall per station:**")
+        st.dataframe(rain_counts.sort_values("Rain_Hour_Count", ascending=False).head(nrows))
 
     # =========================
     # DOWNLOAD RESULTS
     # =========================
+    st.markdown("###  Download Results")
+    col1, col2, col3 = st.columns(3)
+
     def convert_df(df):
         return df.to_csv(index=False).encode('utf-8')
 
-    st.markdown("### Download Results")
-    col1, col2, col3 = st.columns(3)
     with col1:
-        st.download_button(" Daily Summary CSV", convert_df(daily), "daily_rainfall_summary.csv", "text/csv")
+        st.download_button(" Daily Summary", convert_df(daily), "daily_summary.csv", "text/csv")
     with col2:
-        st.download_button("Rain Events CSV", convert_df(events), "rain_events_summary.csv", "text/csv")
+        st.download_button(" Rain Events", convert_df(events), "rain_events.csv", "text/csv")
     with col3:
-        st.download_button(" Rainy Days CSV", convert_df(rainy_days), "rainy_days_summary.csv", "text/csv")
+        st.download_button(" Rainy Days Stats", convert_df(rainy_days), "rainy_days.csv", "text/csv")
 
 else:
-    st.info("Please upload a CSV file to begin the analysis.")
+    st.info(" Please upload a CSV file to begin the analysis.")
