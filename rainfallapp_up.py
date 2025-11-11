@@ -227,3 +227,86 @@ if uploaded_file is not None:
 
 else:
     st.info("Please upload a CSV file to begin the analysis.")
+
+
+# =========================
+# VISUALIZATION SECTION
+# =========================
+st.markdown("---")
+st.subheader("  Visualization and Plots")
+
+show_plots = st.checkbox("Show Plots")
+
+if show_plots:
+    import matplotlib.pyplot as plt
+    import plotly.express as px
+
+    st.markdown("###  Daily Rainfall Trends")
+
+    # Select station
+    station_choice = st.selectbox("Select a station to visualize:", sorted(daily["AWS_ID"].unique()))
+    df_station = daily[daily["AWS_ID"] == station_choice]
+
+    # ---- Daily Rainfall Plot ----
+    fig1, ax = plt.subplots(figsize=(10, 4))
+    ax.plot(df_station["Date"], df_station["Daily_Rainfall"], color='blue', label='Daily Rainfall (mm)')
+    ax.set_title(f"Daily Rainfall Trend - {station_choice}")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Rainfall (mm)")
+    ax.legend()
+    st.pyplot(fig1)
+
+    st.markdown("###  Rainfall Event Statistics")
+    fig2 = px.scatter(
+        events[events["AWS_ID"] == station_choice],
+        x="Start",
+        y="Total_Rain",
+        size="Duration_hrs",
+        color="Average_Intensity",
+        hover_data=["Max_Hourly", "End"],
+        title=f"Rainfall Events at {station_choice}",
+        labels={"Total_Rain": "Total Rain (mm)", "Duration_hrs": "Duration (hrs)"}
+    )
+    st.plotly_chart(fig2, use_container_width=True)
+
+    st.markdown("###  Monthly Rainfall Aggregation")
+    monthly_rain = daily.groupby(["AWS_ID", "Year", "Month"])["Daily_Rainfall"].sum().reset_index()
+    fig3 = px.bar(
+        monthly_rain[monthly_rain["AWS_ID"] == station_choice],
+        x="Month",
+        y="Daily_Rainfall",
+        color="Year",
+        barmode="group",
+        title=f"Monthly Rainfall Distribution - {station_choice}"
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
+    st.markdown("###  Spatial Distribution of Rainfall (Map)")
+    # Aggregate mean rainfall for each station
+    spatial_avg = daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
+
+    fig_map = px.scatter_mapbox(
+        spatial_avg,
+        lat="Latitude",
+        lon="Longitude",
+        color="Daily_Rainfall",
+        size="Daily_Rainfall",
+        hover_name="AWS_ID",
+        color_continuous_scale="Blues",
+        size_max=15,
+        zoom=9,
+        mapbox_style="open-street-map",
+        title="Average Daily Rainfall across AWS Locations"
+    )
+    st.plotly_chart(fig_map, use_container_width=True)
+
+    st.markdown("### ⚡ Rainfall Intensity vs Duration")
+    fig4 = px.scatter(
+        events,
+        x="Duration_hrs",
+        y="Average_Intensity",
+        color="AWS_ID",
+        hover_data=["Total_Rain", "Max_Hourly"],
+        title="Event Duration vs Average Intensity"
+    )
+    st.plotly_chart(fig4, use_container_width=True)
