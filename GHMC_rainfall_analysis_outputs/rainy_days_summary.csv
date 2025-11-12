@@ -1,0 +1,158 @@
+AWS_ID,District,Mandal,Location,Circle,Latitude,Longitude,Total_Rainy_Days,Mean_Daily_Rain,Max_Daily_Rain,Mean_Intensity,Longest_Wet_Spell_days
+10001,Medchal-Malkajgiri,Uppal,Moulali,Circle-28(Malkajgiri),17.456022,78.580806,89,8.297752808988765,44.25,2.0284589107374966,15
+10002,Rangareddy,Rajendranagar,Sivaramapalle ,Circle-11 (Rajendranagar),17.327787,78.424413,91,10.233516483516484,82.5,2.7200425261551637,13
+10006,Hyderabad,Shaikpet,Jubileehills,Circle-18 (Jubilee Hills),17.429389,78.404405,99,8.126262626262626,53.75,1.7806092336395367,16
+10009,Rangareddy,Saroornagar,Viratnagar DMRL,Circle-5 (Saroornagar),17.336369,78.516645,101,8.96039603960396,78.5,2.2445978079950852,14
+10012,Hyderabad,Musheerabad,Musheerabad (chilkalguda),Circle-15 (Musheerabad),17.424391,78.501,93,14.879032258064516,129.75,3.5640992072443685,15
+10013,Medchal-Malkajgiri,Uppal,Bandlaguda,Circle-3 (Hayatnagar),17.365447,78.570947,86,13.005813953488373,96.75,2.830261477863222,7
+10014,Rangareddy,Serilingampally,Madhapur,Circle-21 (Chanda Nagar),17.453137,78.374814,99,10.79040404040404,79.5,2.2350590942447,17
+10308,Rangareddy,Serilingampally,Guchibowli ,Circle-21 (Chanda Nagar),17.470789,78.325971,109,12.204128440366972,111.0,2.6996093388008524,17
+10534,Hyderabad,Bandlaguda,Kandikal Gate,Circle-8 (Chandrayangutta),17.331944,78.477997,99,12.722222222222221,109.0,2.9515523057189723,17
+10535,Hyderabad,Ameerpet,Maitrivanam,Circle-17 (Khairatabad),17.436795,78.446085,93,13.879032258064516,103.25,3.3725327987424762,17
+10544,Rangareddy,Hayathnagar,Hayathnagar,Circle-3 (Hayatnagar),17.33485,78.61254,87,12.330459770114942,115.0,2.9330913020568192,17
+10924,Hyderabad,Saidabad,Asmanghad,Circle-6 (Malakpet),17.363917,78.515883,88,11.71875,85.5,2.4795562392153303,15
+10932,Hyderabad,Tirumalagiri,Tirumalagiri,Circle-27(Alwal),17.471402,78.5027,82,7.658536585365853,51.25,2.095253797692822,15
+10935,Sangareddy,Ramachandrapuram,BHEL Factory,Circle-22 (Ramachandrapuram& Patancheru),17.493918,78.283368,100,10.415,78.5,2.32688380022755,18
+10976,Medchal-Malkajgiri,Malkajgiri,ESS Malkajgiri,Circle-28(Malkajgiri),17.455574,78.529592,86,10.744186046511627,59.5,2.3890981273248717,15
+10995,Medchal-Malkajgiri,Balanagar,ESS Balanagar,Circle-24 (Kukatpally),17.470511,78.433494,88,11.164772727272727,85.0,2.4087011250781303,15
+10998,Medchal-Malkajgiri,Quthbullapur,ESS Quthbullapur,Circle-25(Quthbullapur),17.500713,78.452162,66,15.25,88.25,2.8571580986353715,14
+11189,Hyderabad,Shaikpet,Shaikpet ,Circle-18 (Jubilee Hills),17.397784,78.400165,98,13.716836734693878,108.25,3.3483051508149044,18
+11191,Hyderabad,Maredpally,West Maredpally,Circle-29(Secunderabad),17.454047,78.511979,86,8.918604651162791,62.5,2.0176384505257627,16
+11192,Hyderabad,Secunderabad,Mondamarket,Circle-30(Begumpet),17.43351,78.497828,89,14.275280898876405,135.5,2.967155605006729,15
+11194,Hyderabad,Himayatnagar,Vittalvadi,Circle-16 (Amberpet),17.396992,78.489036,87,12.580459770114942,79.5,3.003891502813917,15
+11195,Hyderabad,Khairatabad,Srinagarcolony,Circle-18 (Jubilee Hills),17.430539,78.441914,88,16.34659090909091,120.25,3.3123264756077258,17
+11196,Hyderabad,Asifnagar,Asifnagar,Circle-12 (Mehdipatnam),17.395567,78.429012,89,9.77247191011236,68.75,2.631596861591078,8
+11197,Hyderabad,Amberpet,Bathukamma kunta ESS,Circle-16 (Amberpet),17.395027,78.511148,86,12.587209302325581,81.75,2.9260215236959426,15
+11198,Hyderabad,Bahadurpura,Chandulal Baradari (Opp. Zoo Park),Circle-10 (Falaknuma),17.350273,78.457083,97,13.29896907216495,96.25,3.0226339882912048,17
+11199,Hyderabad,Golkonda,Golkonda,Circle-13 (Karvan),17.374816,78.395484,84,10.5625,73.25,2.775615495566914,17
+11200,Hyderabad,Nampally,Nampally,Circle-14 (Goshamahal),17.385804,78.46898,93,10.978494623655914,102.0,2.645934673152415,17
+11202,Medchal-Malkajgiri,Kukatpally,GHMC Office: Kukatpally,Circle-24 (Kukatpally),17.470353,78.420252,78,11.407051282051283,86.0,2.626102757536581,13
+11203,Medchal-Malkajgiri,Kapra,Kapra (GHMC Office),Circle-1 (Kapra),17.469864,78.566657,77,16.5974025974026,156.75,3.7031906675575508,15
+11204,Rangareddy,Saroornagar,L.B.Nagar (GHMC Office),Circle-4 (L B Nagar),17.367136,78.535215,94,11.59308510638298,105.0,2.6731701513616404,15
+11206,Hyderabad,Charminar,Sardarmahal (zonal commissioner office),Circle-6 (Malakpet),17.360829,78.475945,96,13.307291666666666,112.5,3.0469457987036113,17
+11513,Rangareddy,Rajendranagar,Rajendranagar (ARS),Circle-11 (Rajendranagar),17.324499,78.399328,93,10.82258064516129,89.25,2.1978276353276356,17
+11780,Medchal-Malkajgiri,Quthbullapur,Shapur Nagar,Circle-26(Gajula ramaram),17.52169,78.447517,84,8.946428571428571,71.25,1.6458248514052083,12
+11812,Medchal-Malkajgiri,Quthbullapur,ESS Jeedimetla,Circle-26(Gajula ramaram),17.522272,78.441542,99,11.373737373737374,76.25,2.3323384002361274,11
+11925,Medchal-Malkajgiri,Alwal,ESS Macha Bollaram,Circle-27(Alwal),17.51851,78.509652,78,4.131410256410256,36.5,1.312942612942613,14
+11927,Rangareddy,Serilingampally,University of Hyderabad,Circle-20 (Serlingampally),17.453107,78.318613,120,12.25625,149.25,2.6683051762371615,17
+12007,Medchal-Malkajgiri,Balanagar,Begumpet (IMD Office),Circle-30(Begumpet),17.446772,78.473496,79,11.272151898734178,102.5,2.6898985332529635,11
+12542,Hyderabad,Khairatabad,Ganaanka Bhavan,Circle-17 (Khairatabad),17.407989,78.460185,91,15.725274725274724,100.0,3.712684785452643,16
+30011,Medchal-Malkajgiri,Alwal,"PHC Center, Ambedkar Nagar",Circle-27(Alwal),17.496101,78.506971,86,12.94767441860465,79.75,3.300987094301048,10
+30012,Medchal-Malkajgiri,Alwal,"Community Hall, Telecom colony",Circle-27(Alwal),17.49241,78.498117,92,12.059782608695652,78.0,2.7586222427934386,18
+30015,Hyderabad,Amberpet,Malakpet Millath Comm Hall,Circle-6 (Malakpet),17.381087,78.500365,90,12.966666666666667,90.5,2.7684039802789804,15
+30018,Hyderabad,Asifnagar,Ziaguda Ranganath Comm Hall (beside ranganatha temple),Circle-13 (Karvan),17.36919,78.451123,93,11.28225806451613,68.5,2.7381093965771384,15
+30019,Hyderabad,Asifnagar,Football Ground Vijayanagar Colony,Circle-12 (Mehdipatnam),17.393281,78.452268,105,11.980952380952381,76.75,3.1229184935434935,15
+30021,Hyderabad,Bahadurpura,Chandulal Baradari Sports Complex: Doodbowli,Circle-10 (Falaknuma),17.352558,78.461543,94,13.77659574468085,103.75,3.247221524781365,15
+30022,Hyderabad,Bahadurpura,Bandi Adda Community Hall: Gansibazar,Circle-9 (Charminar),17.366541,78.46292,109,9.256880733944953,76.0,2.228217135183878,18
+30023,Hyderabad,Bahadurpura,Kishanbagh Govt High School,Circle-10 (Falaknuma),17.359867,78.441507,103,10.745145631067961,66.0,2.6558512044859133,18
+30024,Hyderabad,Bahadurpura,Setwin Training Center: Suleman Nagar,Circle-11 (Rajendranagar),17.353195,78.433827,88,10.778409090909092,80.0,2.6970766922471467,17
+30025,Medchal-Malkajgiri,Balanagar,Ferozguda Comm Hall: Balanagar,Circle-24 (Kukatpally),17.464612,78.462351,85,12.223529411764705,84.25,2.739075630252101,16
+30026,Medchal-Malkajgiri,Balanagar,Mothinagar Ward Office: Moosapet,Circle-23 (Moosapet),17.456185,78.422124,94,11.816489361702128,79.25,2.46310408667261,17
+30027,Medchal-Malkajgiri,Balanagar,"Community Hall, Fathe Nagar",Circle-23 (Moosapet),17.457727,78.450857,86,12.529069767441861,91.25,2.9581393170782704,15
+30030,Hyderabad,Bandlaguda,Barkas ESS chandrayan gutta,Circle-8 (Chandrayangutta),17.314981,78.478492,95,12.639473684210527,96.5,2.9412037210295723,17
+30031,Hyderabad,Bandlaguda,OWISI Commnuity Hall: Kanchanbagh,Circle-8 (Chandrayangutta),17.327,78.494405,81,8.404320987654321,85.25,2.1878562880877697,6
+30032,Hyderabad,Bandlaguda,Indiranagar Community Hall,Circle-8 (Chandrayangutta),17.323478,78.475435,97,14.577319587628866,100.5,3.6845834434751965,17
+30033,Hyderabad,Charminar,Balashetty Water Tank Building(HMWS): Dabeerpura,Circle-6 (Malakpet),17.369099,78.484439,89,12.213483146067416,94.5,2.895848533488983,10
+30034,Hyderabad,Charminar,Libraray Building: ReinBazar Yakuthpura SRT colony,Circle-7 (Santhoshnagar),17.356551,78.493543,93,13.473118279569892,88.0,3.1807184750733137,15
+30036,Hyderabad,Shaikpet,GHMC Welfare Office: Shaikpet,Circle-18 (Jubilee Hills),17.404504,78.396799,103,12.410194174757281,96.0,2.9479339961707183,17
+30037,Hyderabad,Golkonda,Golkonda Tasil office: Lungerhouse,Circle-13 (Karvan),17.375586,78.425918,96,11.643229166666666,89.75,3.1000256581483607,17
+30041,Rangareddy,Saroornagar,Lingojiguda Ward Office,Circle-5 (Saroornagar),17.346847,78.534646,91,11.085164835164836,114.5,2.631088357657928,15
+30042,Rangareddy,Hayathnagar,Prashanth Nagar Comm Hall: Vanasthalipuram,Circle-4 (L B Nagar),17.335182,78.567884,93,9.39247311827957,49.0,2.3062569375069377,15
+30043,Rangareddy,Hayathnagar,South Hasthinapuram South Comm Hall,Circle-4 (L B Nagar),17.324741,78.555146,94,10.47872340425532,56.0,2.2369105185594544,15
+30047,Medchal-Malkajgiri,Kapra,Kushaiguda old ward office: Cherlapalli,Circle-1 (Kapra),17.481941,78.574466,84,13.098214285714286,79.75,3.150350492761207,15
+30048,Medchal-Malkajgiri,Kapra,Maheshnagar Ward Office: Dr.A.S.Rao Nagar,Circle-1 (Kapra),17.479096,78.557893,81,9.425925925925926,62.25,2.120573321921361,15
+30051,Hyderabad,Shaikpet,Dr.MCRHRD IT Campus,Circle-18 (Jubilee Hills),17.44111,78.409903,101,13.215346534653465,79.75,2.7147789366848776,17
+30052,Hyderabad,Khairatabad,Pillidarga Ward Office: Borabanda,Circle-19 (Yousufguda),17.451418,78.408865,121,11.138429752066116,86.0,2.525879538950759,17
+30053,Hyderabad,Khairatabad,Yousufguda Zonal Commissioner officr,Circle-19 (Yousufguda),17.437014,78.431981,94,15.476063829787234,117.0,3.2909930642643412,17
+30055,Medchal-Malkajgiri,Kukatpally,"Community Hall, CBCID Colony: KPHB",Circle-23 (Moosapet),17.497598,78.380318,96,12.091145833333334,77.75,2.6531525332306582,15
+30056,Medchal-Malkajgiri,Kukatpally,"PHC Center, Balaji Nagar",Circle-23 (Moosapet),17.483204,78.409244,98,11.09438775510204,71.0,2.5400658469348443,17
+30060,Medchal-Malkajgiri,Kukatpally,ESS HMT hills: Hyder Nagar,Circle-24 (Kukatpally),17.50254,78.399683,98,13.247448979591837,84.25,2.920122720250271,14
+30061,Medchal-Malkajgiri,Kukatpally,"Ward Office, Allapur Vivekananda Nagar",Circle-23 (Moosapet),17.459527,78.399188,99,11.265151515151516,66.25,2.4561744232198777,17
+30063,Medchal-Malkajgiri,Malkajgiri,Prasanth Nagar Community Hall: East Anandbagh,Circle-28(Malkajgiri),17.445084,78.54343,76,12.256578947368421,83.0,3.0549616228070176,9
+30064,Medchal-Malkajgiri,Malkajgiri,Madhusudhan Nagar Comm.Hall: Anandbagh,Circle-28(Malkajgiri),17.447325,78.532156,92,13.456521739130435,80.25,2.7837534898676206,16
+30065,Medchal-Malkajgiri,Malkajgiri,Vivekanandapuram Comm Hall: Neredmet,Circle-28(Malkajgiri),17.48933,78.531054,98,11.78061224489796,80.75,2.638437766881644,15
+30067,Medchal-Malkajgiri,Malkajgiri,Addagutta Community Hall,Circle-29(Secunderabad),17.443089,78.523589,71,11.20774647887324,99.5,2.715803850883076,15
+30068,Medchal-Malkajgiri,Malkajgiri,"Community Hall, Lalapet Moulali",Circle-29(Secunderabad),17.440231,78.545386,98,10.58673469387755,85.25,1.9987474791365096,16
+30070,Hyderabad,Maredpally,Seethapalmandi Kindi Basthi Comm Hall,Circle-29(Secunderabad),17.426594,78.513227,88,13.784090909090908,122.25,3.0050542181934223,15
+30071,Hyderabad,Maredpally,Pikit Health center:Contonment Area,Circle-30(Begumpet),17.45222,78.500017,86,13.813953488372093,119.75,3.1836277094998024,15
+30074,Hyderabad,Musheerabad,Bansilalpet,Circle-30(Begumpet),17.426455,78.492243,94,13.412234042553191,123.25,3.0577405897884624,15
+30075,Hyderabad,Musheerabad,Osmania University Registrar Office,Circle-15 (Musheerabad),17.410771,78.523482,94,14.172872340425531,105.75,3.2522057065275147,16
+30077,Hyderabad,Nampally,Begum Bazar Doodh Khana UHC,Circle-14 (Goshamahal),17.375644,78.471229,90,14.283333333333333,125.0,3.3198740418532084,15
+30078,Hyderabad,Nampally,LB Stadium: Gunfoudry,Circle-14 (Goshamahal),17.398528,78.47365,102,13.541666666666666,97.0,3.4318834351922587,15
+30079,Hyderabad,Nampally,Dogs Control Building:Gowliwada Jumerath Bazar,Circle-9 (Charminar),17.37041,78.464756,84,9.354166666666666,67.0,2.390159980561766,15
+30081,Sangareddy,Patancheru,Patancheruvu MRO Office,Circle-22 (Ramachandrapuram& Patancheru),17.526439,78.267462,99,10.823232323232324,69.25,2.351130624426079,11
+30082,Medchal-Malkajgiri,Quthbullapur,"Community Hall, Aadharsh Nagar",Circle-25(Quthbullapur),17.485041,78.446608,77,14.006493506493506,75.75,2.9223736400684452,14
+30085,Medchal-Malkajgiri,Quthbullapur,"Ward Office, Gayatri Nagar",Circle-25(Quthbullapur),17.505518,78.470844,106,11.601415094339623,74.25,2.469849693021863,11
+30086,Medchal-Malkajgiri,Quthbullapur,ESS Gajularamaram,Circle-26(Gajula ramaram),17.522104,78.429475,99,10.416666666666666,76.25,2.537753184377516,11
+30088,Rangareddy,Rajendranagar,GHMC Circle office: Rajendranagar,Circle-11 (Rajendranagar),17.331788,78.408922,94,9.529255319148936,70.25,2.6997751214506533,17
+30089,Rangareddy,Rajendranagar,RDO Office: Attapur,Circle-11 (Rajendranagar),17.357415,78.425314,97,10.992268041237113,79.75,2.906760343036116,17
+30091,Rangareddy,Rajendranagar,Near Ekta Colony: Shastripuram (Sivarampally),Circle-11 (Rajendranagar),17.330142,78.437308,91,12.266483516483516,83.0,2.9440730721192905,14
+30092,Rangareddy,Rajendranagar,Sub Staion: Mailardevpally: Sivarampally,Circle-11 (Rajendranagar),17.314977,78.445794,92,11.36413043478261,75.25,2.8350560369582105,17
+30094,Sangareddy,Ramachandrapuram,DEO office Beside Substaion: R.C.Puram,Circle-22 (Ramachandrapuram& Patancheru),17.509442,78.301961,105,11.788095238095238,81.25,2.6475608732328655,11
+30095,Hyderabad,Saidabad,Vinay Nagar Comm Hal: I.S.Sadan,Circle-7 (Santhoshnagar),17.352921,78.507314,90,8.113888888888889,59.0,2.0229665396332064,15
+30098,Hyderabad,Saidabad,Govt. Boys High School: Kurmaguda,Circle-7 (Santhoshnagar),17.360069,78.504228,93,11.884408602150538,78.75,2.7333920410533312,16
+30099,Rangareddy,Saroornagar,Alakapuri Comm Hall,Circle-5 (Saroornagar),17.365435,78.553211,74,9.472972972972974,66.5,2.3009590634590635,13
+30100,Rangareddy,Saroornagar,Madhura nagar Comm.Hall,Circle-3 (Hayatnagar),17.350305,78.562178,79,11.003164556962025,65.25,2.848911926680914,14
+30101,Rangareddy,Saroornagar,Rock Town Colony: Nagole,Circle-3 (Hayatnagar),17.361846,78.562939,95,11.923684210526316,97.75,2.7381688998136364,15
+30103,Hyderabad,Secunderabad,Patigadda,Circle-30(Begumpet),17.433495,78.48402,87,14.35344827586207,119.25,3.31857361587965,15
+30104,Rangareddy,Serilingampally,Raidurga Ward Office: Gachibowli,Circle-20 (Serlingampally),17.413263,78.39223,97,10.95103092783505,102.0,2.3064506906323916,17
+30105,Rangareddy,Serilingampally,Kakatiya Hills: Madhapur,Circle-21 (Chanda Nagar),17.441745,78.397345,101,10.084158415841584,80.75,2.5491127478132425,20
+30106,Rangareddy,Serilingampally,JPN Nagar Comm Hall: Miyapur,Circle-21 (Chanda Nagar),17.506363,78.356382,102,14.014705882352942,123.5,2.767078142445789,14
+30107,Rangareddy,Serilingampally,Urban Health Centre: Hafeezpet,Circle-21 (Chanda Nagar),17.486759,78.356872,98,12.35204081632653,75.5,2.779101416623926,14
+30109,Rangareddy,Serilingampally,MMTS Lingampally,Circle-20 (Serlingampally),17.485283,78.314788,104,13.23798076923077,118.5,2.8818914759119085,17
+30110,Rangareddy,Serilingampally,PJR Stadium: Chandanagar,Circle-21 (Chanda Nagar),17.48883,78.324393,99,13.222222222222221,110.0,2.8985688380741856,14
+30111,Rangareddy,Serilingampally,Khajaguda Sports Complex Gachibowli,Circle-20 (Serlingampally),17.418305,78.36669,96,12.393229166666666,133.75,2.4954068322404717,17
+30112,Hyderabad,Shaikpet,Tolichowki Dalith Bhavan,Circle-13 (Karvan),17.40362,78.419533,111,14.065315315315315,133.5,2.500208465833466,17
+30113,Hyderabad,Shaikpet,Venkateshwara Colony: Banjarahills,Circle-18 (Jubilee Hills),17.418644,78.441962,89,13.044943820224718,88.0,2.687654534915771,17
+30114,Hyderabad,Shaikpet,CMTC Premises: Banjara Hills,Circle-18 (Jubilee Hills),17.414006,78.433628,106,15.408018867924529,126.0,3.7125379784231063,17
+30115,Hyderabad,Shaikpet,Goutham Nagar Function Hall: Filmnagar,Circle-18 (Jubilee Hills),17.411781,78.410541,199,5.939698492462312,95.5,1.4420432110832644,25
+30116,Hyderabad,Shaikpet,Venkatgiri Water Tank: Vengalrao Nagar,Circle-19 (Yousufguda),17.432313,78.422006,94,8.579787234042554,74.5,2.035318980664725,15
+30117,Medchal-Malkajgiri,Uppal,Rajiv Nagar Community Hall,Circle-1 (Kapra),17.460602,78.570329,93,11.39516129032258,77.0,2.7658081874815745,15
+30118,Medchal-Malkajgiri,Uppal,"Ward Office, Mallapur",Circle-1 (Kapra),17.44585,78.574226,92,11.002717391304348,82.5,2.2490503834933184,17
+30119,Medchal-Malkajgiri,Uppal,Chilkanagar Comm Hall,Circle-2 (Uppal),17.42164,78.563291,88,9.181818181818182,59.0,2.301736844279458,11
+30121,Medchal-Malkajgiri,Uppal,Maruthi Nagar Mahila Sabha Center,Circle-5 (Saroornagar),17.375455,78.540999,71,11.161971830985916,94.0,2.529324773426886,15
+30122,Medchal-Malkajgiri,Uppal,New Nagole Welfare asscoiation,Circle-5 (Saroornagar),17.373291,78.556038,84,11.889880952380953,99.25,2.625359940984941,15
+30123,Medchal-Malkajgiri,Uppal,"Community Hall, Habsiguda JSN Colony",Circle-2 (Uppal),17.405238,78.541774,97,10.93041237113402,70.75,2.47192304402356,15
+30124,Medchal-Malkajgiri,Uppal,Ramanthapur Ward Office,Circle-2 (Uppal),17.392765,78.53666,79,11.00632911392405,82.75,2.8390853520600356,15
+30125,Medchal-Malkajgiri,Uppal,Nacharam Ward Office,Circle-1 (Kapra),17.424343,78.543489,92,12.997282608695652,101.25,2.8323164682539685,16
+30126,Medchal-Malkajgiri,Malkajgiri,"Sakhi Center, Safilguda",Circle-28(Malkajgiri),17.466358,78.534171,110,10.36590909090909,68.75,2.2587000531034622,16
+30127,Hyderabad,Himayatnagar,GHMC Head Office,Circle-29(Secunderabad),17.407806,78.4756,97,15.20103092783505,117.25,3.897693522113625,15
+30128,Hyderabad,Khairatabad,CESS,Circle-17 (Khairatabad),17.431116,78.452129,93,17.56989247311828,142.5,3.998592782665363,16
+30129,Hyderabad,Asifnagar,Allabada Water Reservoir,Circle-14 (Goshamahal),17.380026,78.455432,89,12.668539325842696,97.75,3.1664531551469755,15
+30130,Hyderabad,Asifnagar,Mehdipatnam Navodaya Comm Hall,Circle-12 (Mehdipatnam),17.387675,78.436241,100,10.44,73.0,2.6446562604062605,17
+30140,Hyderabad,Maredpally,New Mettuguda Primary School,Circle-29 (Secunderabad),17.4332066,78.5193999,93,17.024193548387096,153.25,3.6495810640971933,16
+30141,Hyderabad,Bandlaguda,Khalender Nagar Community Hall ,Circle-7 (Santosh Nagar),17.3456,78.50525,101,13.316831683168317,98.25,3.2092037908541986,15
+30142,Hyderabad,Amberpet,Palton Community Hall,Circle-6 (Malakpet),17.372238,78.5031016,99,11.237373737373737,83.75,2.5806564927777047,15
+30143,Hyderabad,Amberpet,Azampura Ward Office,Circle-6 (Malakpet),17.3719,78.49105,97,11.961340206185566,92.25,2.8835641019919374,17
+30144,Hyderabad,Charminar,Edi bazar Community hall,Circle-8 (Chandrayangutta),17.35278146,78.4931513,93,12.96236559139785,71.5,3.244770865335382,15
+30145,Hyderabad,Bahadurpura,Rooplal Bazar Community Hall,Circle-9 (Charminar),17.35075,78.47138,126,9.811507936507937,79.0,2.3361433127058127,15
+30146,Hyderabad,Bahadurpura,"Wadi E Mahmood Sulemannagar, Pillar No.217",Circle-11 (Rajendranagar),17.3458816,78.4177414,93,11.658602150537634,79.5,2.7562620250120253,15
+30147,Hyderabad,Bandlaguda,Mekalamandi Community Hall,Circle-7 (Santosh Nagar),17.34667394,78.48094609,99,11.555555555555555,69.5,2.793709040678738,15
+30148,Medchal-Malkajgiri,Uppal,Moosarambagh Ward office,Circle-6 (Malakpet),17.37756557,78.51864926,92,12.08695652173913,100.5,2.691701934840522,15
+30149,Hyderabad,Bandlaguda,"GHMC Zonal Office, Charminar Zone, Phool Bagh",Circle-8 (Chandrayangutta),17.3323,78.48617,85,12.170588235294117,99.5,2.9449529800265095,8
+30151,Hyderabad,Bandlaguda,HMWSSB office RIYASATNAGAR,Circle-8 (Chandrayangutta),17.34567,78.5053,85,14.1,85.0,2.6563523894406247,17
+30154,Hyderabad,Asifnagar,"Ward Office, Karwan, Beside UPHC",Circle-13 (Karwan),17.3761093,78.44199459,82,9.481707317073171,51.5,2.506970756208561,11
+30155,Hyderabad,Asifnagar,"Bada Bazar Comm Hall, First Lancer, Ahmed Nagar",Circle-12 (Mehdipatnam),17.40278216,78.44006175,106,10.452830188679245,104.0,2.600019378820711,17
+30157,Medchal-Malkajgiri,Kukatpally,Rajiv Gruhakalpa,Circle-25 (Gajularamaram),17.5065258,78.4215266,98,13.24234693877551,102.0,3.0736892430132228,14
+30158,Medchal-Malkajgiri,Kukatpally,Shamshiguda,Circle-24 (Kukatpally),17.5060727,78.4042396,98,10.596938775510203,81.5,2.3236864496881005,17
+30160,Medchal-Malkajgiri,Kukatpally,Kukatpally Village (Basthi Dawakhana),Circle-24 (Kukatpally),17.49701684,78.42706275,89,12.46629213483146,100.75,2.828772637364838,14
+30161,Medchal-Malkajgiri,Balanagar,Bowenpally ward office,Circle-24 (Kukatpally),17.47671308,78.47877272,75,11.973333333333333,118.25,2.5541957671957674,10
+30162,Medchal-Malkajgiri,Quthbullapur,"GHMC Ward Office,Mahadevapuram",Circle-25 (Gajularamaram),17.517122,78.413698,99,12.244949494949495,151.5,2.629057782433451,15
+30163,Rangareddy,Saroornagar,"Ward Office Building,SBI Colony Champapet",Circle-4 (L.B.Nagar),17.345945,78.515231,94,12.893617021276595,122.75,2.8893401810955,15
+30164,Medchal-Malkajgiri,Uppal,"GHMC Zonal Office, Uppal",Circle-2 (Uppal),17.40106991,78.57118694,69,14.94927536231884,110.5,3.6378369617500055,8
+30165,Rangareddy,Hayathnagar,"Defence Colony Comm Hall,  Hayath Nagar",Circle-3 (Hayath Nagar),17.31861305,78.61245728,99,11.22979797979798,104.25,2.6768359096010608,17
+30166,Rangareddy,Hayathnagar,"Model Market Bldg NGOs Colony, Vansathalipuram",Circle-3 (Hayath Nagar),17.327703,78.563039,99,10.914141414141413,61.5,2.516559716938505,15
+30167,Rangareddy,Saroornagar,Ghmc Transport Building ,Circle-5 (Saroor Nagar),17.35851,78.53636,87,13.491379310344827,120.25,2.9547837290611123,15
+30168,Medchal-Malkajgiri,Kapra,Sainikpuri Shopping Complex,Circle-1 (Kapra),17.48398,78.55005,84,8.601190476190476,61.75,2.2299751257340543,15
+30169,Hyderabad,Musheerabad,Jawahar Nagar Community Hall ,Circle-15 (Musheerabad),17.40904912,78.49124616,82,16.8109756097561,114.25,3.9882595554851648,13
+30170,Hyderabad,Musheerabad,Talla Basthi Community Hall ,Circle-15 (Musheerabad),17.42012356,78.4901951,118,12.474576271186441,153.0,2.5505290404109573,30
+30171,Hyderabad,Himayatnagar,TSRTC Employee Building Vidya Nagar,Circle-15 (Musheerabad),17.40369439,78.50513262,92,13.980978260869565,92.5,3.1455031683292556,15
+30172,Hyderabad,Himayatnagar,"Ward Office, Nehru Nagar",Circle-16 (Amberpet),17.38907,78.50261,91,11.708791208791208,76.0,2.6344102783663224,15
+30173,Hyderabad,Musheerabad,"Bholakpur Comm Hall, Near  Musheerabad PS ",Circle-15 (Musheerabad),17.41956,78.50078,92,15.434782608695652,131.25,3.7042942036827906,15
+30174,Hyderabad,Amberpet,"GHMC Sports Complex, Amberpet",Circle-16 (Amberpet),17.39176074,78.51821394,96,11.138020833333334,87.25,2.542215965458153,15
+30175,Medchal-Malkajgiri,Malkajgiri,Vinayak Nagar Ward office,Circle-28 (Malkajgiri),17.468058,78.541716,58,11.85344827586207,59.75,2.4514834782076163,8
+30176,Hyderabad,Musheerabad,Adikmet Ward office,Circle-15 (Musheerabad),17.40918229,78.51529952,91,12.826923076923077,96.0,3.0633778919493206,15
+30177,Hyderabad,Musheerabad,Boudha Nagar Community Hall,Circle-29 (Secunderabad),17.41600702,78.51737759,94,15.914893617021276,124.0,3.563457235731172,14
+30178,Hyderabad,Musheerabad,"MCH Colony, Library Building",Circle-15 (Musheerabad),17.41735153,78.50809723,92,15.434782608695652,157.25,3.4085867861003734,15
+30180,Hyderabad,Khairatabad,"Old Ward Office ,Rahmathnagar",Circle-19 (Yousufguda),17.440569,78.421435,90,13.683333333333334,83.25,3.1731615173588215,17
+30181,Medchal-Malkajgiri,Balanagar,Old sultan nagar Community hall,Circle-19 (Yousufguda),17.455077,78.432912,85,11.5,77.0,2.7168785544520837,17
