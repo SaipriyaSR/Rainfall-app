@@ -330,7 +330,7 @@ if uploaded_file is not None:
                 with col1:
                     st.dataframe(daily_rain_counts, use_container_width=True)
                 with col2:
-                    fig = px.bar(daily_rain_counts, x='Date', y='Hours_Rained', title=f'Number of Rainy Hours per Day - {station_select}')
+                    fig = px.bar(daily_rain_counts, x='Date', y='Hours_Rained', title=f'Number of Rainy Hours per Day - {station_select}',color_discrete_sequence=["#A6B1B8"])
                     st.plotly_chart(fig, use_container_width=True)
 
             # ---------- 2 Rainy Days per Month and Season ----------
