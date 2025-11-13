@@ -22,13 +22,33 @@ st.markdown("""
 # ---------- GLOBAL STYLES ----------
 st.markdown("""
     <style>
-    /* Increase sidebar width */
+    /* ---------- Sidebar sizing (visible by default) ---------- */
     [data-testid="stSidebar"] {
-        min-width: 300px;  /* Default is ~250px, increase as needed */
-        max-width: 300px;
+        min-width: 300px !important;
+        max-width: 320px !important;
+        transition: width 0.25s ease, padding 0.25s ease;
     }
 
+    /* ---------- Make sidebar visually collapse (when aria-expanded=false) ---------- */
+    [data-testid="stSidebar"][aria-expanded="false"] {
+        width: 0px !important;
+        min-width: 0px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
 
+    /* ---------- Main/content container base style & transition ---------- */
+    [data-testid="stMain"] {
+        transition: margin-left 0.25s ease, width 0.25s ease;
+    }
+
+    /* ---------- When sidebar is collapsed — expand the main content fully ---------- */
+    /* Common DOM pattern: sidebar sibling -> main */
+    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding-left: 2rem !important;  /* small inner padding if you like */
+    }
     /* Tabs container*/
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
