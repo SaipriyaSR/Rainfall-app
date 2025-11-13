@@ -22,17 +22,34 @@ st.markdown("""
 # ---------- GLOBAL STYLES ----------
 st.markdown("""
     <style>
-    /* Tabs */
+    /* Tabs container*/
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
         background-color: #f4f6f8;
         padding: 10px;
         border-radius: 8px;
     }
+    /* Individual Tabs */
     .stTabs [data-baseweb="tab"] {
-        font-size: 45px !important;
-        font-weight: 900 !important;
+        font-size: 28px !important;  /* Increased font size */
+        font-weight: 700 !important; /* Bolder font */
         color: #002b5c !important;
+        padding: 15px 25px !important;
+        border-radius: 8px !important;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Hover effect */
+    .stTabs [data-baseweb="tab"]:hover {
+        background-color: #e0e7ef !important;
+        color: #004080 !important;
+    }
+
+    /* Active Tab */
+    .stTabs [aria-selected="true"] {
+        background-color: #002b5c !important;
+        color: white !important;
+        border-radius: 8px !important;
     }
     /* DataFrame scrollbar hidden */
     div[data-testid="stDataFrameResizable"] div[role="presentation"]::-webkit-scrollbar {
