@@ -121,7 +121,7 @@ You can:
                 
 """)
 
-uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file ")
+uploaded_file = st.sidebar.file_uploader(" Upload hourly rainfall CSV file ")
 
 # =========================
 # MAIN BODY
