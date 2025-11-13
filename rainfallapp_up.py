@@ -101,18 +101,9 @@ uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file",
 # MAIN BODY
 # =========================
 if uploaded_file is not None:
-    st.success(" File uploaded successfully!")
+    st.sidebar.success(" File uploaded successfully!")
 
-    try:
-        if uploaded_file.name.endswith(".csv"):
-            df = pd.read_csv(uploaded_file)
-        elif uploaded_file.name.endswith(".xlsx"):
-            df = pd.read_excel(uploaded_file)
-        else:
-            st.error("Unsupported file format.")
-            df = None
-    except Exception as e:
-        st.error(f"Error reading file: {e}")
+    df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
     # ---------- Preview Section ----------
