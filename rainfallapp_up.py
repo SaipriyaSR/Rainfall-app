@@ -53,7 +53,8 @@ You can:
 - Run custom threshold queries  
 - Analyze trends station-wise  
 
-**Upload a CSV file** to begin.
+**Upload a CSV file** to begin (Upload hourly rainfall dataset (CSV) with columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)').
+                
 """)
 
 uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file", type=['csv'])
