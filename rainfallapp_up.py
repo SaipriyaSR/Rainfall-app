@@ -54,10 +54,9 @@ if uploaded_file is not None:
             st.subheader("GHMC Map and AWS Locations")
 
             # Load GHMC shapefile
-            import os
+           
 
-            shapefile_path = os.path.join("ghmc_boundary.shp")
-
+            shapefile_path = "ghmc_boundary.shp"
             if os.path.exists(shapefile_path):
                 ghmc_gdf = gpd.read_file(shapefile_path).to_crs(epsg=4326)
             else:
