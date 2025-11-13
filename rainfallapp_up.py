@@ -30,8 +30,8 @@ st.markdown("""
         border-radius: 8px;
     }
     .stTabs [data-baseweb="tab"] {
-        font-size: 25px !important;
-        font-weight: 600 !important;
+        font-size: 35px !important;
+        font-weight: 800 !important;
         color: #002b5c !important;
     }
     /* DataFrame scrollbar hidden */
@@ -84,20 +84,20 @@ uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file",
 # MAIN BODY
 # =========================
 if uploaded_file is not None:
-    st.success("✅ File uploaded successfully!")
+    st.success(" File uploaded successfully!")
 
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
     # ---------- Preview Section ----------
-    with st.expander("🔍 Data Preview and Station Map"):
+    with st.expander(" Data Preview and Station Map"):
         col1, col2 = st.columns([1, 1])
         with col1:
-            st.subheader("📄 Data Preview")
+            st.subheader(" Data Preview")
             st.dataframe(df.head(20), use_container_width=True)
 
         with col2:
-            st.subheader("🗺️ AWS Station Locations")
+            st.subheader(" AWS Station Locations")
             if {'Latitude', 'Longitude'}.issubset(df.columns):
                 stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
                 fig = px.scatter_mapbox(stations, lat="Latitude", lon="Longitude",
@@ -105,7 +105,7 @@ if uploaded_file is not None:
                                         title="AWS Station Locations")
                 st.plotly_chart(fig, use_container_width=True)
             else:
-                st.warning("⚠️ Latitude/Longitude columns not found in uploaded file.")
+                st.warning(" Latitude/Longitude columns not found in uploaded file.")
 
     # ---------- Preprocessing ----------
     df.rename(columns={'Hourly__Rainfall_(mm)': 'Hourly_Rain'}, inplace=True, errors='ignore')
@@ -146,10 +146,10 @@ if uploaded_file is not None:
 
     # ---------- Tabs ----------
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📅 Data Summary",
-        "⚙️ Custom Queries",
-        "📊 Visualization",
-        "📍 Station Analysis"
+        " Data Summary",
+        " Custom Queries",
+        " Visualization",
+        " Station Analysis"
     ])
 
     # =========================
