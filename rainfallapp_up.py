@@ -28,10 +28,7 @@ st.markdown("""
         max-width: 400px;
     }
 
-    /* Optional: adjust main content width accordingly */
-    [data-testid="stAppViewContainer"] {
-        margin-left: 420px;  /* Adjust spacing to match new sidebar width */
-    }
+
     /* Tabs container*/
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
