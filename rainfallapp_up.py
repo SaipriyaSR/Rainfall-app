@@ -91,7 +91,7 @@ st.markdown("""
     
     /* Footer styling */
     .footer {
-    text-align: center;
+    text-align: left;
     padding: 10px;
     position: fixed;
     bottom: 0;
@@ -101,20 +101,7 @@ st.markdown("""
     font-size: 14px;
     color: #444;
     }
-    /* Expand main content when sidebar is hidden */
-    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] {
-        margin-left: 0 !important;
-        width: 100% !important;
-    }
-    /* Footer alignment with sidebar state */
-    [data-testid="stSidebar"][aria-expanded="true"] ~ div[data-testid="stMain"] .footer {
-        margin-left: 320px;  /* same as sidebar width */
-        width: calc(100% - 320px);
-    }
-    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] .footer {
-        margin-left: 0;
-        width: 100%;
-    }
+
     </style>
 """, unsafe_allow_html=True)
 
