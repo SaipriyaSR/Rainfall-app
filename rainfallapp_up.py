@@ -127,7 +127,7 @@ if uploaded_file is not None:
     # ---- LEFT COLUMN: Data Filtering ----
     with col1:
         if summary_option == "Daily Rainfall Summary":
-            daily_threshold = st.number_input("Enter daily rainfall threshold (mm):", value=50.0)
+            daily_threshold = st.number_input("Enter daily rainfall threshold (mm):", value=0.0)
 
             # Store results persistently in session_state
             if st.button("Show Daily Summary"):
@@ -141,7 +141,7 @@ if uploaded_file is not None:
                 st.dataframe(st.session_state['filtered_daily'])
 
         else:
-            event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=30.0)
+            event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=0.0)
 
             if st.button("Show Event Summary"):
                 st.session_state['filtered_events'] = events[events['Total_Rain'] >= event_thresh]
@@ -204,35 +204,51 @@ if uploaded_file is not None:
     with tab2:
         st.subheader(" Threshold-Based Queries")
 
+        # --- Hourly Rainfall Query ---
         with st.expander("Hourly Rainfall Threshold Query"):
             hr_thresh = st.number_input("Enter hourly rainfall threshold (mm):", value=10.0, key="hourly_q")
             if st.button("Run Hourly Query"):
                 filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
                 st.write(f"Records ≥ {hr_thresh} mm/hour: {len(filtered_hr)}")
-                st.dataframe(filtered_hr)
-                fig = px.histogram(filtered_hr, x="Hourly_Rain", nbins=30, title="Distribution of Hourly Rainfall")
-                st.plotly_chart(fig, use_container_width=True)
 
+                col1, col2 = st.columns([1.2, 1.8])
+                with col1:
+                    st.dataframe(filtered_hr, use_container_width=True)
+                with col2:
+                    fig = px.histogram(filtered_hr, x="Hourly_Rain", nbins=30, color="AWS_ID",
+                                    title="Distribution of Hourly Rainfall ≥ Threshold")
+                    st.plotly_chart(fig, use_container_width=True)
+
+        # --- Daily Rainfall Query ---
         with st.expander("Daily Rainfall Threshold Query"):
             daily_thresh = st.number_input("Enter daily rainfall threshold (mm):", value=50.0, key="daily_q")
             if st.button("Run Daily Query"):
                 high_daily = daily[daily["Daily_Rainfall"] >= daily_thresh]
                 st.write(f"Days ≥ {daily_thresh} mm/day: {len(high_daily)}")
-                st.dataframe(high_daily)
-                fig = px.box(high_daily, x="AWS_ID", y="Daily_Rainfall", color="AWS_ID",
-                             title="Boxplot of Daily Rainfall Across Stations")
-                st.plotly_chart(fig, use_container_width=True)
 
+                col3, col4 = st.columns([1.2, 1.8])
+                with col3:
+                    st.dataframe(high_daily, use_container_width=True)
+                with col4:
+                    fig = px.box(high_daily, x="AWS_ID", y="Daily_Rainfall", color="AWS_ID",
+                                title="Boxplot of Daily Rainfall Across Stations (≥ Threshold)")
+                    st.plotly_chart(fig, use_container_width=True)
+
+        # --- Event Duration Query ---
         with st.expander("Event Duration Query"):
             duration_thresh = st.number_input("Enter event duration threshold (hours):", value=5, key="event_q")
             if st.button("Run Event Duration Query"):
                 long_events = events[events["Duration_hrs"] >= duration_thresh]
                 st.write(f"Events ≥ {duration_thresh} hours: {len(long_events)}")
-                st.dataframe(long_events)
-                fig = px.scatter(long_events, x="Duration_hrs", y="Average_Intensity",
-                                 color="AWS_ID", size="Total_Rain", hover_data=["Start", "End"],
-                                 title="Duration vs Intensity of Events")
-                st.plotly_chart(fig, use_container_width=True)
+
+                col5, col6 = st.columns([1.2, 1.8])
+                with col5:
+                    st.dataframe(long_events, use_container_width=True)
+                with col6:
+                    fig = px.scatter(long_events, x="Duration_hrs", y="Average_Intensity",
+                                    color="AWS_ID", size="Total_Rain", hover_data=["Start", "End"],
+                                    title="Duration vs Intensity of Events (≥ Threshold)")
+                    st.plotly_chart(fig, use_container_width=True)
 
     # =========================
     # TAB 3 - VISUALIZATION PANEL
