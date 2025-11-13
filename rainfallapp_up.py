@@ -295,7 +295,7 @@ if uploaded_file is not None:
     with tab4:
         st.subheader("Station-wise Rainfall Frequency and Intensity Analysis")
 
-        # Layout: selection on left, results on right
+        # Layout: selection + menu on left, results on right
         left_col, right_col = st.columns([0.3, 1.7])
 
         with left_col:
@@ -304,71 +304,89 @@ if uploaded_file is not None:
             meta_info = df[df["AWS_ID"] == station_select][['District', 'Mandal', 'Location', 'Circle']].drop_duplicates()
             st.dataframe(meta_info, hide_index=True, use_container_width=True)
 
+            # --- Analysis menu ---
+            st.markdown("#### Select Analysis Type")
+            analysis_choice = st.radio(
+                "Choose analysis to display:",
+                [
+                    "Rainy Hours per Day",
+                    "Rainy Days per Month and Season",
+                    "High-Intensity and Maximum Rainfall Events",
+                    "Monthly Distribution of Event Intensities"
+                ],
+                index=0
+            )
+
         with right_col:
             df_station = df[df["AWS_ID"] == station_select]
             daily_station = daily[daily["AWS_ID"] == station_select]
             event_station = events[events["AWS_ID"] == station_select]
 
-            #  Number of hours it rained per day
-            st.markdown("###  Number of Rainy Hours per Day")
-            daily_rain_counts = df_station.groupby('Date')['Hourly_Rain'].apply(lambda x: (x > 0).sum()).reset_index(name='Hours_Rained')
-            col1, col2 = st.columns([1, 2])
-            with col1:
-                st.dataframe(daily_rain_counts, use_container_width=True)
-            with col2:
-                fig = px.bar(daily_rain_counts, x='Date', y='Hours_Rained', title=f'Number of Rainy Hours per Day - {station_select}')
+            # ---------- 1️ Rainy Hours per Day ----------
+            if analysis_choice == "Rainy Hours per Day":
+                st.markdown("###  Number of Rainy Hours per Day")
+                daily_rain_counts = df_station.groupby('Date')['Hourly_Rain'].apply(lambda x: (x > 0).sum()).reset_index(name='Hours_Rained')
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.dataframe(daily_rain_counts, use_container_width=True)
+                with col2:
+                    fig = px.bar(daily_rain_counts, x='Date', y='Hours_Rained', title=f'Number of Rainy Hours per Day - {station_select}')
+                    st.plotly_chart(fig, use_container_width=True)
+
+            # ---------- 2 Rainy Days per Month and Season ----------
+            elif analysis_choice == "Rainy Days per Month and Season":
+                st.markdown("###  Number of Rainy Days per Month and Season")
+                daily_station['RainDay'] = (daily_station['Daily_Rainfall'] > 0).astype(int)
+
+                def get_season(month):
+                    if month in [1, 2]:
+                        return 'Winter'
+                    elif month in [3, 4, 5]:
+                        return 'Pre-Monsoon'
+                    elif month in [6, 7, 8]:
+                        return 'Monsoon'
+                    else:
+                        return 'Post-Monsoon'
+
+                daily_station['Season'] = daily_station['Month'].apply(get_season)
+                monthly_rain_days = daily_station.groupby('Month')['RainDay'].sum().reset_index(name='Rainy_Days')
+                seasonal_rain_days = daily_station.groupby('Season')['RainDay'].sum().reset_index(name='Rainy_Days')
+
+                col3, col4 = st.columns([1, 2])
+                with col3:
+                    st.write("**Monthly Rainy Days**")
+                    st.dataframe(monthly_rain_days, hide_index=True, use_container_width=True)
+                    st.write("**Seasonal Rainy Days**")
+                    st.dataframe(seasonal_rain_days, hide_index=True, use_container_width=True)
+                with col4:
+                    fig = px.bar(monthly_rain_days, x='Month', y='Rainy_Days', title=f'Rainy Days per Month - {station_select}')
+                    st.plotly_chart(fig, use_container_width=True)
+
+            # ---------- 3️ High-Intensity and Maximum Rainfall Events ----------
+            elif analysis_choice == "High-Intensity and Maximum Rainfall Events":
+                st.markdown("###  High-Intensity and Maximum Rainfall Events")
+                intense_events = event_station[event_station['Average_Intensity'] > 5]
+
+                col5, col6 = st.columns([1, 2])
+                with col5:
+                    st.metric("Max Rainfall Intensity (mm/hr)", f"{event_station['Average_Intensity'].max():.2f}")
+                    st.metric("Total Events (>5 mm/hr)", f"{len(intense_events)}")
+                    st.dataframe(intense_events[['Start', 'End', 'Duration_hrs', 'Total_Rain', 'Average_Intensity']], use_container_width=True)
+                with col6:
+                    fig = px.histogram(intense_events, x="Average_Intensity", nbins=20,
+                                    color_discrete_sequence=["#959799"],
+                                    title=f"Distribution of High-Intensity Events (>5 mm/hr) - {station_select}")
+                    st.plotly_chart(fig, use_container_width=True)
+
+            # ---------- 4️ Monthly Distribution of Event Intensities ----------
+            elif analysis_choice == "Monthly Distribution of Event Intensities":
+                st.markdown("###  Monthly Distribution of Event Intensities")
+                monthly_intensity = event_station.copy()
+                monthly_intensity['Month'] = monthly_intensity['Start'].dt.month
+                fig = px.box(monthly_intensity, x="Month", y="Average_Intensity",
+                            title=f"Monthly Distribution of Event Intensities - {station_select}",
+                            color_discrete_sequence=["#A6B1B8"])
                 st.plotly_chart(fig, use_container_width=True)
-
-            #  Number of Rainy Days per Month and Season
-            st.markdown("###  Number of Rainy Days per Month and Season")
-            daily_station['RainDay'] = (daily_station['Daily_Rainfall'] > 0).astype(int)
-
-            def get_season(month):
-                if month in [1, 2]:
-                    return 'Winter'
-                elif month in [3, 4, 5]:
-                    return 'Pre-Monsoon'
-                elif month in [6, 7, 8]:
-                    return 'Monsoon'
-                else:
-                    return 'Post-Monsoon'
-
-            daily_station['Season'] = daily_station['Month'].apply(get_season)
-            monthly_rain_days = daily_station.groupby('Month')['RainDay'].sum().reset_index(name='Rainy_Days')
-            seasonal_rain_days = daily_station.groupby('Season')['RainDay'].sum().reset_index(name='Rainy_Days')
-
-            col3, col4 = st.columns([1, 2])
-            with col3:
-                st.write("**Monthly Rainy Days**")
-                st.dataframe(monthly_rain_days, hide_index=True, use_container_width=True)
-                st.write("**Seasonal Rainy Days**")
-                st.dataframe(seasonal_rain_days, hide_index=True, use_container_width=True)
-            with col4:
-                fig = px.bar(monthly_rain_days, x='Month', y='Rainy_Days', title=f'Rainy Days per Month - {station_select}')
-                st.plotly_chart(fig, use_container_width=True)
-
-            #  High-Intensity and Maximum Rainfall Events
-            st.markdown("### ⚡ High-Intensity and Maximum Rainfall Events")
-            intense_events = event_station[event_station['Average_Intensity'] > 5]
-
-            col5, col6 = st.columns([1, 2])
-            with col5:
-                st.metric("Max Rainfall Intensity (mm/hr)", f"{event_station['Average_Intensity'].max():.2f}")
-                st.metric("Total Events (>5 mm/hr)", f"{len(intense_events)}")
-                st.dataframe(intense_events[['Start', 'End', 'Duration_hrs', 'Total_Rain', 'Average_Intensity']], use_container_width=True)
-            with col6:
-                fig = px.histogram(intense_events, x="Average_Intensity", nbins=20, color_discrete_sequence=['#1f77b4'],
-                                title=f"Distribution of High-Intensity Events (>5 mm/hr) - {station_select}")
-                st.plotly_chart(fig, use_container_width=True)
-
-            #  Monthly Intensity Distribution
-            st.markdown("### Monthly Distribution of Event Intensities")
-            monthly_intensity = event_station.copy()
-            monthly_intensity['Month'] = monthly_intensity['Start'].dt.month
-            fig = px.box(monthly_intensity, x="Month", y="Average_Intensity",
-                        title=f"Monthly Distribution of Event Intensities - {station_select}",
-                        color_discrete_sequence=['#0072B2'])
-            st.plotly_chart(fig, use_container_width=True)
 
 
 else:
