@@ -22,6 +22,16 @@ st.markdown("""
 # ---------- GLOBAL STYLES ----------
 st.markdown("""
     <style>
+    /* Increase sidebar width */
+    [data-testid="stSidebar"] {
+        min-width: 400px;  /* Default is ~250px, increase as needed */
+        max-width: 400px;
+    }
+
+    /* Optional: adjust main content width accordingly */
+    [data-testid="stAppViewContainer"] {
+        margin-left: 420px;  /* Adjust spacing to match new sidebar width */
+    }
     /* Tabs container*/
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
