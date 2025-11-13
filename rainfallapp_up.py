@@ -119,10 +119,10 @@ if uploaded_file is not None:
     # TAB 1 - DATA SUMMARY
     # =========================
     with tab1:
-    st.subheader(" Rainfall Summary")
-    summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
+        st.subheader(" Rainfall Summary")
+        summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
 
-    col1, col2 = st.columns([1.3, 1])
+        col1, col2 = st.columns([1.3, 1])
 
     # ---- LEFT COLUMN: Data Filtering ----
     with col1:
