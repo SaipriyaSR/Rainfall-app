@@ -54,7 +54,7 @@ if uploaded_file is not None:
             st.subheader("GHMC Map and AWS Locations")
 
             # Load GHMC shapefile
-           
+            import os
 
             shapefile_path = "ghmc_boundary.shp"
             if os.path.exists(shapefile_path):
