@@ -146,7 +146,7 @@ if uploaded_file is not None:
 
     # ---------- Tabs ----------
     tab1, tab2, tab3, tab4 = st.tabs([
-        " Data Summary",
+        " *Data Summary*",
         " Custom Queries",
         " Visualization",
         " Station Analysis"
