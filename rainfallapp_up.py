@@ -340,7 +340,81 @@ if uploaded_file is not None:
                                     color="AWS_ID", size="Total_Rain", hover_data=["Start", "End"],
                                     title="Duration vs Intensity of Events (≥ Threshold)")
                     st.plotly_chart(fig, use_container_width=True)
+        with st.expander(" 🔍 Custom Query and Summary"):
+    st.write("Filter the rainfall dataset by station, period, or condition")
 
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        aws_selected = st.selectbox("Select AWS Station", options=df['AWS_ID'].unique())
+    with col2:
+        start_date = st.date_input("Start Date", value=pd.to_datetime(df['Date']).min())
+    with col3:
+        end_date = st.date_input("End Date", value=pd.to_datetime(df['Date']).max())
+
+    # Filter the dataset
+    query_df = df[(df['AWS_ID'] == aws_selected) &
+                  (df['Date'] >= pd.to_datetime(start_date)) &
+                  (df['Date'] <= pd.to_datetime(end_date))].copy()
+
+    if not query_df.empty:
+        st.success(f"✅ {len(query_df)} records found for {aws_selected} between {start_date} and {end_date}")
+
+        # ---------- Daily Summary ----------
+        daily_query = query_df.groupby(['AWS_ID', 'Year', 'Month', 'Date']).agg(
+            Daily_Rainfall=('Hourly_Rain', 'sum'),
+            Max_Hourly_Rain=('Hourly_Rain', 'max'),
+            Hours_Rained=('Hourly_Rain', lambda x: (x > 0).sum())
+        ).reset_index()
+
+        daily_query['Daily_Intensity'] = daily_query.apply(
+            lambda x: x['Daily_Rainfall'] / x['Hours_Rained'] if x['Hours_Rained'] > 0 else 0, axis=1
+        )
+
+        # ✅ Merge metadata
+        meta_cols = ['AWS_ID', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']
+        daily_query = daily_query.merge(df[meta_cols].drop_duplicates(), on='AWS_ID', how='left')
+
+        # ✅ Reorder columns to match consistent structure
+        daily_query = daily_query[[
+            'AWS_ID', 'Year', 'Month', 'Date',
+            'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained', 'Daily_Intensity',
+            'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude'
+        ]]
+
+        # ---------- Event Summary ----------
+        df_sorted = query_df.sort_values(['DateTime']).copy()
+        df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
+        df_sorted['EventStart'] = (df_sorted['RainFlag'].diff().fillna(0) == 1).astype(int)
+        df_sorted['EventID'] = (df_sorted['EventStart'].cumsum() * df_sorted['RainFlag']).astype(int)
+
+        events_query = df_sorted[df_sorted['EventID'] > 0].groupby(['AWS_ID', 'EventID']).agg(
+            Start=('DateTime', 'min'),
+            End=('DateTime', 'max'),
+            Duration_hrs=('DateTime', 'count'),
+            Total_Rain=('Hourly_Rain', 'sum'),
+            Max_Hourly=('Hourly_Rain', 'max')
+        ).reset_index()
+
+        events_query['Average_Intensity'] = events_query['Total_Rain'] / events_query['Duration_hrs']
+
+        # ✅ Merge metadata
+        events_query = events_query.merge(df[meta_cols].drop_duplicates(), on='AWS_ID', how='left')
+
+        # ✅ Reorder columns
+        events_query = events_query[[
+            'AWS_ID', 'EventID', 'Start', 'End',
+            'Duration_hrs', 'Total_Rain', 'Max_Hourly', 'Average_Intensity',
+            'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude'
+        ]]
+
+        # ---------- Display ----------
+        st.subheader("📅 Daily Summary")
+        st.dataframe(daily_query, use_container_width=True)
+
+        st.subheader("🌧️ Event Summary")
+        st.dataframe(events_query, use_container_width=True)
+    else:
+        st.warning("No data found for the selected station and date range.")
     # =========================
     # TAB 3 - VISUALIZATION PANEL
     # =========================
