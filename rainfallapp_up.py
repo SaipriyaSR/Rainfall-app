@@ -24,7 +24,7 @@ st.markdown("""
     <style>
     /* Increase sidebar width */
     [data-testid="stSidebar"] {
-        min-width: 300px;  /* Default is ~250px, increase as needed */
+          /* Default is ~250px, increase as needed */
         max-width: 300px;
     }
 
