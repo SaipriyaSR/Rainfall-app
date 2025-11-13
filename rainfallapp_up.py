@@ -43,12 +43,12 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
     # Check basic structure
-    with st.expander("🔍 Click to Preview Data and GHMC Map"):
-        col1, col2 = st.columns([1.3, 1])
+    with st.expander(" Click to Preview Data and GHMC Map"):
+        col1, col2 = st.columns([1, 1])
 
         with col1:
             st.subheader("Data Preview")
-            st.dataframe(df.head())
+            st.dataframe(df)
 
         with col2:
             st.subheader("AWS Station Locations (OpenStreetMap)")
