@@ -565,17 +565,34 @@ if uploaded_file is not None:
             # ---------- 5 Event-to-Event Gap (Same Day) ----------
             elif analysis_choice == "Event-to-Event Gap (Same Day)":
                 st.markdown("#### Event-to-Event Gap (Same Day)")
-                events_sorted = event_station.sort_values("Start").copy()
-                events_sorted['Gap_hr'] = (events_sorted['Start'] - events_sorted['End'].shift(1)).dt.total_seconds() / 3600
-                events_sorted['Same_Day'] = events_sorted['Start'].dt.date == events_sorted['End'].shift(1).dt.date
 
+                # Sort by AWS_ID and Start
+                events_sorted = event_station.sort_values(["AWS_ID", "Start"]).copy()
+
+                # Compute gap within each AWS_ID
+                events_sorted['Prev_End'] = events_sorted.groupby('AWS_ID')['End'].shift(1)
+                events_sorted['Prev_End_Date'] = events_sorted['Prev_End'].dt.date
+
+                # Calculate gap in hours only if on the same day
+                events_sorted['Gap_hr'] = (events_sorted['Start'] - events_sorted['Prev_End']).dt.total_seconds() / 3600
+                events_sorted['Same_Day'] = events_sorted['Start'].dt.date == events_sorted['Prev_End_Date']
+
+                # Filter for same-day positive gaps
                 same_day_gaps = events_sorted[events_sorted['Same_Day'] & (events_sorted['Gap_hr'] > 0)]
-                st.dataframe(same_day_gaps[['AWS_ID', 'EventID', 'Start', 'End', 'Gap_hr']], use_container_width=True)
 
-                fig = px.histogram(same_day_gaps, x="Gap_hr", nbins=20,
-                                title=f"Distribution of Event-to-Event Gaps (Same Day) - {station_select}",
-                                color_discrete_sequence=["#A6B1B8"])
-                st.plotly_chart(fig, use_container_width=True)        
+                if not same_day_gaps.empty:
+                    st.dataframe(same_day_gaps[['AWS_ID', 'EventID', 'Start', 'End', 'Gap_hr']], use_container_width=True)
+
+                    fig = px.histogram(
+                        same_day_gaps, 
+                        x="Gap_hr", 
+                        nbins=20,
+                        title=f"Distribution of Event-to-Event Gaps (Same Day) - {station_select}",
+                        color_discrete_sequence=["#A6B1B8"]
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+                else:
+                    st.info("No same-day event gaps found for this station.")       
 
 else:
     st.info(" Please upload a CSV file to start the analysis.")
