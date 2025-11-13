@@ -12,7 +12,7 @@ st.set_page_config(page_title="GHMC Rainfall Dashboard", layout="wide")
 
 # ---------- HEADER ----------
 st.markdown("""
-    <div style='background: linear-gradient(90deg, #002b5c 0%, #00509e 100%);
+    <div style='background: linear-gradient(90deg, #00695c 0%, #26a69a 100%);
                 padding: 18px; border-radius: 10px; text-align: center; color: white;'>
         <h1 style='margin-bottom: 5px;'> GHMC Rainfall Analysis Tool</h1>
         <h5 style='margin-top: 0;'>Explore Hourly, Daily, and Event-Based Rainfall Patterns</h5>
@@ -30,7 +30,7 @@ st.markdown("""
         border-radius: 8px;
     }
     .stTabs [data-baseweb="tab"] {
-        font-size: 17px !important;
+        font-size: 25px !important;
         font-weight: 600 !important;
         color: #002b5c !important;
     }
