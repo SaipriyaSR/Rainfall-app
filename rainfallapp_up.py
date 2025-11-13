@@ -51,69 +51,10 @@ if uploaded_file is not None:
             st.dataframe(df.head())
 
         with col2:
-            st.subheader("GHMC Map and AWS Locations")
-
-            # Load GHMC shapefile
-            import os
-
-            shapefile_path = "ghmc_boundary.shp"
-            if os.path.exists(shapefile_path):
-                ghmc_gdf = gpd.read_file(shapefile_path).to_crs(epsg=4326)
-            else:
-                st.warning("GHMC boundary shapefile not found. Please ensure it's inside the 'data/' folder in the repository.")
-                ghmc_gdf = None
-
-            import numpy as np
-
-            # Ensure shapefile is in EPSG:4326 for lat/lon plotting
-            ghmc_gdf = ghmc_gdf.to_crs(epsg=4326)
-
-            # Add GHMC boundary as line overlay
-            for _, row in ghmc_gdf.iterrows():
-                geom = row.geometry
-                if geom.is_empty:
-                    continue
-
-                if geom.geom_type == "Polygon":
-                    # Exterior boundary
-                    x, y = np.array(geom.exterior.coords.xy)
-                    fig.add_scattermapbox(
-                        lon=x, lat=y, mode="lines",
-                        line=dict(width=2, color="red"),
-                        name="GHMC Boundary"
-                    )
-                    # (Optional) Interior holes
-                    for interior in geom.interiors:
-                        x, y = np.array(interior.coords.xy)
-                        fig.add_scattermapbox(
-                            lon=x, lat=y, mode="lines",
-                            line=dict(width=1, color="red"),
-                            name=""
-                        )
-
-                elif geom.geom_type == "MultiPolygon":
-                    for polygon in geom.geoms:
-                        x, y = np.array(polygon.exterior.coords.xy)
-                        fig.add_scattermapbox(
-                            lon=x, lat=y, mode="lines",
-                            line=dict(width=2, color="red"),
-                            name="GHMC Boundary"
-                        )
-                        for interior in polygon.interiors:
-                            x, y = np.array(interior.coords.xy)
-                            fig.add_scattermapbox(
-                                lon=x, lat=y, mode="lines",
-                                line=dict(width=1, color="red"),
-                                name=""
-                            )
-
-
-
-            # Station locations
+            st.subheader("AWS Station Locations (OpenStreetMap)")
             if 'Latitude' in df.columns and 'Longitude' in df.columns:
                 stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
 
-                # Convert to GeoDataFrame for plotting
                 fig = px.scatter_mapbox(
                     stations,
                     lat="Latitude",
@@ -121,11 +62,8 @@ if uploaded_file is not None:
                     hover_name="AWS_ID",
                     zoom=9,
                     mapbox_style="open-street-map",
-                    title="GHMC Boundary and Station Locations"
+                    title="AWS Station Locations"
                 )
-
-                
-            
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning("Latitude/Longitude columns not found in uploaded file.")
