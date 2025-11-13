@@ -24,8 +24,8 @@ st.markdown("""
     <style>
     /* Increase sidebar width */
     [data-testid="stSidebar"] {
-        min-width: 400px;  /* Default is ~250px, increase as needed */
-        max-width: 400px;
+        min-width: 350px;  /* Default is ~250px, increase as needed */
+        max-width: 350px;
     }
 
 
@@ -97,11 +97,11 @@ You can:
 - Run custom threshold queries  
 - Analyze data station-wise  
 
-**Upload a CSV file** to begin.
+**Upload a CSV file** to begin (Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv']).
                 
 """)
 
-uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file with columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv'])
+uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file )
 
 # =========================
 # MAIN BODY
