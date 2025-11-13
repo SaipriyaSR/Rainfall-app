@@ -91,7 +91,7 @@ st.markdown("""
     
     /* Footer styling */
     .footer {
-    text-align: left;
+    text-align: center;
     padding: 10px;
     position: fixed;
     bottom: 0;
