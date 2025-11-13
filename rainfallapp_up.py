@@ -54,8 +54,16 @@ if uploaded_file is not None:
             st.subheader("GHMC Map and AWS Locations")
 
             # Load GHMC shapefile
-            ghmc_gdf = gpd.read_file(r"D:\Saipriya\Research_proposal\Study area\GHMC Boundary\GHMC\ghmc_boundary.shp")
-            ghmc_gdf = ghmc_gdf.to_crs(epsg=4326)
+            import os
+
+            shapefile_path = os.path.join("ghmc_boundary.shp")
+
+            if os.path.exists(shapefile_path):
+                ghmc_gdf = gpd.read_file(shapefile_path).to_crs(epsg=4326)
+            else:
+                st.warning("GHMC boundary shapefile not found. Please ensure it's inside the 'data/' folder in the repository.")
+                ghmc_gdf = None
+
 
             # Station locations
             if 'Latitude' in df.columns and 'Longitude' in df.columns:
