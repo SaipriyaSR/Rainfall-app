@@ -425,3 +425,12 @@ if uploaded_file is not None:
 
 else:
     st.info(" Please upload a CSV file to start the analysis.")
+
+# ---------- FOOTER ----------
+st.markdown("""
+    <div class="footer">
+        Developed by <b>RAFT Research Group</b>, Department of Civil Engineering,<br>
+        <b>IIT Hyderabad</b>
+    </div>
+""", unsafe_allow_html=True)
+
