@@ -88,7 +88,7 @@ You can:
 - View hourly/daily rainfall summaries  
 - Identify rainfall events  
 - Run custom threshold queries  
-- Analyze trends station-wise  
+- Analyze data station-wise  
 
 **Upload a CSV file** to begin.
                 
