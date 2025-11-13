@@ -95,7 +95,7 @@ st.markdown("""
     padding: 10px;
     position: fixed;
     bottom: 0;
-    width: 100vw !important;  /* force full viewport width */
+    width: 100%;
     background-color: #f9f9f9;
     border-top: 1px solid #ddd;
     font-size: 14px;
@@ -106,7 +106,15 @@ st.markdown("""
         margin-left: 0 !important;
         width: 100% !important;
     }
-
+    /* Footer alignment with sidebar state */
+    [data-testid="stSidebar"][aria-expanded="true"] ~ div[data-testid="stMain"] .footer {
+        margin-left: 320px;  /* same as sidebar width */
+        width: calc(100% - 320px);
+    }
+    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] .footer {
+        margin-left: 0;
+        width: 100%;
+    }
     </style>
 """, unsafe_allow_html=True)
 
