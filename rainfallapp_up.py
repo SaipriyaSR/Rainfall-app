@@ -113,7 +113,7 @@ if uploaded_file is not None:
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
     # ---------- Preview Section ----------
-    with st.expander(" Data Preview and Station Map"):
+    with st.expander(" **Data Preview and Station Map**"):
         col1, col2 = st.columns([1, 1])
         with col1:
             st.subheader(" Data Preview")
