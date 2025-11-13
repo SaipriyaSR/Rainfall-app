@@ -569,22 +569,26 @@ if uploaded_file is not None:
                 # Sort by AWS_ID and Start
                 events_sorted = event_station.sort_values(["AWS_ID", "Start"]).copy()
 
-                # Compute gap within each AWS_ID
+                # Compute previous end time within each AWS_ID
                 events_sorted['Prev_End'] = events_sorted.groupby('AWS_ID')['End'].shift(1)
-                events_sorted['Prev_End_Date'] = events_sorted['Prev_End'].dt.date
 
-                # Calculate gap in hours
-                events_sorted['Gap_hr'] = (events_sorted['Start'] - events_sorted['Prev_End']).dt.total_seconds() / 3600
-                events_sorted['Same_Day'] = events_sorted['Start'].dt.date == events_sorted['Prev_End_Date']
+                # Calculate if current and previous events are on the same day
+                events_sorted['Same_Day'] = events_sorted['Start'].dt.date == events_sorted['Prev_End'].dt.date
 
-                # Filter for same-day positive gaps
-                same_day_gaps = events_sorted[events_sorted['Same_Day'] & (events_sorted['Gap_hr'] > 0)]
+                # Calculate gap in hours only if same day, otherwise 0
+                events_sorted['Gap_hr'] = events_sorted.apply(
+                    lambda row: (row['Start'] - row['Prev_End']).total_seconds() / 3600 if row['Same_Day'] else 0,
+                    axis=1
+                )
 
-                if not same_day_gaps.empty:
-                    st.dataframe(same_day_gaps[['AWS_ID', 'EventID', 'Start', 'End', 'Gap_hr']], use_container_width=True)
+                st.dataframe(events_sorted[['AWS_ID', 'EventID', 'Start', 'End', 'Gap_hr']], use_container_width=True)
 
+                # Plot histogram only for positive gaps
+                positive_gaps = events_sorted[events_sorted['Gap_hr'] > 0]
+
+                if not positive_gaps.empty:
                     fig = px.histogram(
-                        same_day_gaps, 
+                        positive_gaps, 
                         x="Gap_hr", 
                         nbins=20,
                         title=f"Distribution of Event-to-Event Gaps (Same Day) - {station_select}",
@@ -593,20 +597,7 @@ if uploaded_file is not None:
                     st.plotly_chart(fig, use_container_width=True)
                 else:
                     st.info("No same-day event gaps found for this station.")
-                    # If no gaps, create a dummy dataframe with Gap_hr = 0
-                    dummy_df = events_sorted[['AWS_ID', 'EventID', 'Start', 'End']].copy()
-                    dummy_df['Gap_hr'] = 0
-                    st.dataframe(dummy_df, use_container_width=True)
 
-                    # Optional: plot a single bar at 0
-                    fig = px.histogram(
-                        dummy_df, 
-                        x="Gap_hr", 
-                        nbins=1,
-                        title=f"No Event-to-Event Gaps (Same Day) - {station_select}",
-                        color_discrete_sequence=["#A6B1B8"]
-                    )
-                    st.plotly_chart(fig, use_container_width=True)
    
 
 else:
