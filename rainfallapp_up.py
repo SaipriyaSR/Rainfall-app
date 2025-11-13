@@ -10,11 +10,6 @@ import geopandas as gpd
 st.set_page_config(page_title="GHMC Rainfall Dashboard", layout="wide")
 st.title(" GHMC Rainfall Analysis ")
 
-#st.markdown("""
-#This interactive dashboard allows you to explore **hourly GHMC rainfall data**,  
-#generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.
-#""")
-
 st.markdown("""
     <style>
     .stTabs [data-baseweb="tab-list"] {
@@ -24,16 +19,16 @@ st.markdown("""
         border-radius: 10px;
     }
     .stTabs [data-baseweb="tab"] {
-        font-size: 18px;
-        font-weight: 600;
-        color: #003366;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        color: #002b5c !important;
     }
     </style>
 """, unsafe_allow_html=True)
+
 # =========================
 # FILE UPLOAD
 # =========================
-# Upload section
 st.sidebar.header("***Rainfall Analysis Tool***\n\n This interactive dashboard allows you to explore **hourly GHMC rainfall data**, generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.\n\n Upload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'")
 uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
 
@@ -42,8 +37,8 @@ if uploaded_file is not None:
 
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
-    # Check basic structure
-    with st.expander(" Click to Preview Data and GHMC Map"):
+
+    with st.expander(" Click to Preview Data and Location map"):
         col1, col2 = st.columns([1, 1])
 
         with col1:
@@ -51,7 +46,7 @@ if uploaded_file is not None:
             st.dataframe(df.head(20))
 
         with col2:
-            st.subheader("AWS Station Locations (OpenStreetMap)")
+            st.subheader("AWS Station Locations")
             if 'Latitude' in df.columns and 'Longitude' in df.columns:
                 stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
 
@@ -95,7 +90,6 @@ if uploaded_file is not None:
     daily['Daily_Intensity'] = daily.apply(lambda x: x['Daily_Rainfall'] / x['Hours_Rained']
                                            if x['Hours_Rained'] > 0 else 0, axis=1)
 
-    # Identify rainfall events
     df_sorted = df.sort_values(['AWS_ID', 'DateTime']).copy()
     df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
     df_sorted['EventStart'] = (df_sorted['RainFlag'].diff().fillna(0) == 1).astype(int)
@@ -135,9 +129,6 @@ if uploaded_file is not None:
                 daily_threshold = st.number_input("Enter daily rainfall threshold (mm):", value=50.0)
                 if st.button("Show Daily Summary"):
                     filtered_daily = daily[daily['Daily_Rainfall'] >= daily_threshold]
-                    limit = st.selectbox("Rows to display:", [10, 20, 50, "All"], index=0)
-                    if limit != "All":
-                        filtered_daily = filtered_daily.head(limit)
                     st.success(f"Days with rainfall ≥ {daily_threshold} mm: {len(filtered_daily)}")
                     st.dataframe(filtered_daily)
 
@@ -145,9 +136,6 @@ if uploaded_file is not None:
                 event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=30.0)
                 if st.button("Show Event Summary"):
                     filtered_events = events[events['Total_Rain'] >= event_thresh]
-                    limit = st.selectbox("Rows to display:", [10, 20, 50, "All"], index=0)
-                    if limit != "All":
-                        filtered_events = filtered_events.head(limit)
                     st.success(f"Events with total rainfall ≥ {event_thresh} mm: {len(filtered_events)}")
                     st.dataframe(filtered_events)
 
@@ -199,9 +187,6 @@ if uploaded_file is not None:
             hr_thresh = st.number_input("Enter hourly rainfall threshold (mm):", value=10.0, key="hourly_q")
             if st.button("Run Hourly Query"):
                 filtered_hr = df[df["Hourly_Rain"] >= hr_thresh]
-                limit = st.selectbox("Rows to display:", [10, 20, 50, "All"], key="hr_limit")
-                if limit != "All":
-                    filtered_hr = filtered_hr.head(limit)
                 st.write(f"Records ≥ {hr_thresh} mm/hour: {len(filtered_hr)}")
                 st.dataframe(filtered_hr)
                 fig = px.histogram(filtered_hr, x="Hourly_Rain", nbins=30, title="Distribution of Hourly Rainfall")
@@ -211,9 +196,6 @@ if uploaded_file is not None:
             daily_thresh = st.number_input("Enter daily rainfall threshold (mm):", value=50.0, key="daily_q")
             if st.button("Run Daily Query"):
                 high_daily = daily[daily["Daily_Rainfall"] >= daily_thresh]
-                limit = st.selectbox("Rows to display:", [10, 20, 50, "All"], key="daily_limit")
-                if limit != "All":
-                    high_daily = high_daily.head(limit)
                 st.write(f"Days ≥ {daily_thresh} mm/day: {len(high_daily)}")
                 st.dataframe(high_daily)
                 fig = px.box(high_daily, x="AWS_ID", y="Daily_Rainfall", color="AWS_ID",
@@ -224,9 +206,6 @@ if uploaded_file is not None:
             duration_thresh = st.number_input("Enter event duration threshold (hours):", value=5, key="event_q")
             if st.button("Run Event Duration Query"):
                 long_events = events[events["Duration_hrs"] >= duration_thresh]
-                limit = st.selectbox("Rows to display:", [10, 20, 50, "All"], key="event_limit")
-                if limit != "All":
-                    long_events = long_events.head(limit)
                 st.write(f"Events ≥ {duration_thresh} hours: {len(long_events)}")
                 st.dataframe(long_events)
                 fig = px.scatter(long_events, x="Duration_hrs", y="Average_Intensity",
@@ -288,9 +267,6 @@ if uploaded_file is not None:
         col1, col2 = st.columns([1, 2])
         with col1:
             daily_rain_counts = df_station.groupby('Date')['Hourly_Rain'].apply(lambda x: (x > 0).sum()).reset_index(name='Hours_Rained')
-            limit = st.selectbox("Rows:", [10, 20, 50, "All"], key="rain_hours")
-            if limit != "All":
-                daily_rain_counts = daily_rain_counts.head(limit)
             st.dataframe(daily_rain_counts)
         with col2:
             fig = px.bar(daily_rain_counts, x='Date', y='Hours_Rained', title=f'Number of Rainy Hours per Day - {station_select}')
@@ -306,7 +282,6 @@ if uploaded_file is not None:
             fig = px.bar(monthly_rain_days, x='Month', y='Rainy_Days', title=f'Rainy Days per Month - {station_select}')
             st.plotly_chart(fig, use_container_width=True)
 
-        # Define season
         def get_season(month):
             if month in [1, 2]:
                 return 'Winter'
@@ -330,7 +305,7 @@ if uploaded_file is not None:
         col7, col8 = st.columns([1, 2])
         with col7:
             intense_events = event_station[event_station['Average_Intensity'] > 5]
-            st.dataframe(intense_events.head(10))
+            st.dataframe(intense_events)
         with col8:
             fig = px.histogram(intense_events, x="Average_Intensity", nbins=20, color="AWS_ID",
                                title=f"Distribution of High-Intensity Events (>5 mm/hr) - {station_select}")
