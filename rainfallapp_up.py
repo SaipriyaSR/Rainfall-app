@@ -324,7 +324,7 @@ if uploaded_file is not None:
 
             # ---------- 1️ Rainy Hours per Day ----------
             if analysis_choice == "Rainy Hours per Day":
-                st.markdown("###  Number of Rainy Hours per Day")
+                st.markdown("####  Number of Rainy Hours per Day")
                 daily_rain_counts = df_station.groupby('Date')['Hourly_Rain'].apply(lambda x: (x > 0).sum()).reset_index(name='Hours_Rained')
                 col1, col2 = st.columns([1, 2])
                 with col1:
@@ -335,7 +335,7 @@ if uploaded_file is not None:
 
             # ---------- 2 Rainy Days per Month and Season ----------
             elif analysis_choice == "Rainy Days per Month and Season":
-                st.markdown("###  Number of Rainy Days per Month and Season")
+                st.markdown("####  Number of Rainy Days per Month and Season")
                 daily_station['RainDay'] = (daily_station['Daily_Rainfall'] > 0).astype(int)
 
                 def get_season(month):
@@ -359,12 +359,12 @@ if uploaded_file is not None:
                     st.write("**Seasonal Rainy Days**")
                     st.dataframe(seasonal_rain_days, hide_index=True, use_container_width=True)
                 with col4:
-                    fig = px.bar(monthly_rain_days, x='Month', y='Rainy_Days', title=f'Rainy Days per Month - {station_select}')
+                    fig = px.bar(monthly_rain_days, x='Month', y='Rainy_Days', title=f'Rainy Days per Month - {station_select}',color_discrete_sequence=["#A6B1B8"])
                     st.plotly_chart(fig, use_container_width=True)
 
             # ---------- 3️ High-Intensity and Maximum Rainfall Events ----------
             elif analysis_choice == "High-Intensity and Maximum Rainfall Events":
-                st.markdown("###  High-Intensity and Maximum Rainfall Events")
+                st.markdown("####  High-Intensity and Maximum Rainfall Events")
                 intense_events = event_station[event_station['Average_Intensity'] > 5]
 
                 col5, col6 = st.columns([1, 2])
@@ -380,7 +380,7 @@ if uploaded_file is not None:
 
             # ---------- 4️ Monthly Distribution of Event Intensities ----------
             elif analysis_choice == "Monthly Distribution of Event Intensities":
-                st.markdown("###  Monthly Distribution of Event Intensities")
+                st.markdown("####  Monthly Distribution of Event Intensities")
                 monthly_intensity = event_station.copy()
                 monthly_intensity['Month'] = monthly_intensity['Start'].dt.month
                 fig = px.box(monthly_intensity, x="Month", y="Average_Intensity",
