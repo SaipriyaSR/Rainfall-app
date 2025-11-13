@@ -466,7 +466,7 @@ if uploaded_file is not None:
         st.subheader("Station-wise Rainfall Frequency and Intensity Analysis")
 
         # Layout: selection + menu on left, results on right
-        left_col, right_col = st.columns([0.3, 1.7])
+        left_col, right_col = st.columns([0.4, 1.6])
 
         with left_col:
             station_select = st.selectbox("Select a Station", sorted(df["AWS_ID"].unique()))
