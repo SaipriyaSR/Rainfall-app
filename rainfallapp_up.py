@@ -8,67 +8,85 @@ import geopandas as gpd
 # APP CONFIG
 # =========================
 st.set_page_config(page_title="GHMC Rainfall Dashboard", layout="wide")
-st.title(" GHMC Rainfall Analysis ")
+#st.title(" Rainfall Analysis Tool for GHMC")
 
+# ---------- HEADER ----------
+st.markdown("""
+    <div style='background: linear-gradient(90deg, #002b5c 0%, #00509e 100%);
+                padding: 18px; border-radius: 10px; text-align: center; color: white;'>
+        <h1 style='margin-bottom: 5px;'>🌧️ GHMC Rainfall Analysis Tool</h1>
+        <h5 style='margin-top: 0;'>Explore Hourly, Daily, and Event-Based Rainfall Patterns</h5>
+    </div>
+""", unsafe_allow_html=True)
+
+# ---------- GLOBAL STYLES ----------
 st.markdown("""
     <style>
+    /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
-        background-color: #f0f2f6;
-        padding: 12px 0;
-        border-radius: 10px;
+        background-color: #f4f6f8;
+        padding: 10px;
+        border-radius: 8px;
     }
     .stTabs [data-baseweb="tab"] {
-        font-size: 20px !important;
-        font-weight: 700 !important;
+        font-size: 17px !important;
+        font-weight: 600 !important;
         color: #002b5c !important;
+    }
+    /* DataFrame scrollbar hidden */
+    div[data-testid="stDataFrameResizable"] div[role="presentation"]::-webkit-scrollbar {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# =========================
-# FILE UPLOAD
-# =========================
-st.sidebar.header("***Rainfall Analysis Tool***\n\n This interactive dashboard allows you to explore **hourly GHMC rainfall data**, generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.\n\n Upload hourly rainfall dataset (CSV) with columns: 'S.No', 'AWS_ID', 'Date_&_Time', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'")
-uploaded_file = st.file_uploader(" Upload hourly rainfall CSV file", type=['csv'])
+# ---------- SIDEBAR ----------
+st.sidebar.image("https://upload.wikimedia.org/wikipedia/en/thumb/1/18/GHMC_logo.png/200px-GHMC_logo.png", width=120)
+st.sidebar.header("📊 About this App")
+st.sidebar.info("""
+This dashboard enables **interactive exploration** of rainfall data for GHMC stations.
 
+You can:
+- View hourly/daily rainfall summaries  
+- Identify rainfall events  
+- Run custom threshold queries  
+- Analyze trends station-wise  
+
+**Upload a CSV file** to begin.
+""")
+
+uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file", type=['csv'])
+
+# =========================
+# MAIN BODY
+# =========================
 if uploaded_file is not None:
-    st.success(" File uploaded successfully!")
+    st.success("✅ File uploaded successfully!")
 
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
-    with st.expander(" Click to Preview Data and Location map"):
+    # ---------- Preview Section ----------
+    with st.expander("🔍 Data Preview and Station Map"):
         col1, col2 = st.columns([1, 1])
-
         with col1:
-            st.subheader("Data Preview")
-            st.dataframe(df.head(20))
+            st.subheader("📄 Data Preview")
+            st.dataframe(df.head(20), use_container_width=True)
 
         with col2:
-            st.subheader("AWS Station Locations")
-            if 'Latitude' in df.columns and 'Longitude' in df.columns:
+            st.subheader("🗺️ AWS Station Locations")
+            if {'Latitude', 'Longitude'}.issubset(df.columns):
                 stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
-
-                fig = px.scatter_mapbox(
-                    stations,
-                    lat="Latitude",
-                    lon="Longitude",
-                    hover_name="AWS_ID",
-                    zoom=9,
-                    mapbox_style="open-street-map",
-                    title="AWS Station Locations"
-                )
+                fig = px.scatter_mapbox(stations, lat="Latitude", lon="Longitude",
+                                        hover_name="AWS_ID", zoom=9, mapbox_style="open-street-map",
+                                        title="AWS Station Locations")
                 st.plotly_chart(fig, use_container_width=True)
             else:
-                st.warning("Latitude/Longitude columns not found in uploaded file.")
+                st.warning("⚠️ Latitude/Longitude columns not found in uploaded file.")
 
-    # Rename and preprocess
-    df.rename(columns={
-        'Hourly__Rainfall_(mm)': 'Hourly_Rain',
-        'Day_Cumulative__Rainfall_(mm)': 'Day_CumRain'
-    }, inplace=True, errors='ignore')
-
+    # ---------- Preprocessing ----------
+    df.rename(columns={'Hourly__Rainfall_(mm)': 'Hourly_Rain'}, inplace=True, errors='ignore')
     df['DateTime'] = pd.to_datetime(df['Date_&_Time'], format='%d-%m-%Y %H:%M', errors='coerce')
     df.dropna(subset=['DateTime'], inplace=True)
     df['Date'] = df['DateTime'].dt.date
@@ -78,17 +96,16 @@ if uploaded_file is not None:
 
     meta_cols = ['AWS_ID', 'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']
 
-    # =========================
-    # AGGREGATED DATASETS
-    # =========================
+    # ---------- Aggregated Datasets ----------
     daily = df.groupby(meta_cols + ['Year', 'Month', 'Date']).agg(
         Daily_Rainfall=('Hourly_Rain', 'sum'),
         Max_Hourly_Rain=('Hourly_Rain', 'max'),
         Hours_Rained=('Hourly_Rain', lambda x: (x > 0).sum())
     ).reset_index()
 
-    daily['Daily_Intensity'] = daily.apply(lambda x: x['Daily_Rainfall'] / x['Hours_Rained']
-                                           if x['Hours_Rained'] > 0 else 0, axis=1)
+    daily['Daily_Intensity'] = daily.apply(
+        lambda x: x['Daily_Rainfall'] / x['Hours_Rained'] if x['Hours_Rained'] > 0 else 0, axis=1
+    )
 
     df_sorted = df.sort_values(['AWS_ID', 'DateTime']).copy()
     df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
@@ -105,14 +122,12 @@ if uploaded_file is not None:
 
     events['Average_Intensity'] = events['Total_Rain'] / events['Duration_hrs']
 
-    # =========================
-    # MAIN TABS
-    # =========================
+    # ---------- Tabs ----------
     tab1, tab2, tab3, tab4 = st.tabs([
-        " Data Summary",
-        " Custom Queries",
-        " Visualization",
-        " Station Analysis"
+        "📅 Data Summary",
+        "⚙️ Custom Queries",
+        "📊 Visualization",
+        "📍 Station Analysis"
     ])
 
     # =========================
