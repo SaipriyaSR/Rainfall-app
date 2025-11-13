@@ -463,7 +463,7 @@ if uploaded_file is not None:
     # TAB 4 - STATION ANALYSIS
     # =========================
     with tab4:
-        st.subheader("## Station-wise Rainfall Frequency and Intensity Analysis")
+        st.subheader("Station-wise Rainfall Frequency and Intensity Analysis")
 
         # Layout: selection + menu on left, results on right
         left_col, right_col = st.columns([0.3, 1.7])
