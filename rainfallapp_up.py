@@ -122,7 +122,7 @@ You can:
 - Run custom threshold queries  
 - Analyze data station-wise  
 
-**Upload a CSV file** to begin *(Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv'])*.
+**Upload a CSV file** to begin (Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv']).
                 
 """)
 
