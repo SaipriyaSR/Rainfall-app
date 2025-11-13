@@ -14,6 +14,21 @@ st.title(" GHMC Rainfall Analysis ")
 #generate rainfall summaries, rainfall event statistics, and threshold-based queries with insightful visualizations.
 #""")
 
+st.markdown("""
+    <style>
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 25px;
+        background-color: #f0f2f6;
+        padding: 12px 0;
+        border-radius: 10px;
+    }
+    .stTabs [data-baseweb="tab"] {
+        font-size: 18px;
+        font-weight: 600;
+        color: #003366;
+    }
+    </style>
+""", unsafe_allow_html=True)
 # =========================
 # FILE UPLOAD
 # =========================
@@ -27,8 +42,47 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
     # Check basic structure
-    st.write("### Data Preview")
-    st.dataframe(df.head())
+    with st.expander("🔍 Click to Preview Data and GHMC Map"):
+        col1, col2 = st.columns([1.3, 1])
+
+        with col1:
+            st.subheader("Data Preview")
+            st.dataframe(df)
+
+        with col2:
+            st.subheader("GHMC Map and AWS Locations")
+
+            # Load GHMC shapefile
+            ghmc_gdf = gpd.read_file(r"D:\Saipriya\Research_proposal\Study area\GHMC Boundary\GHMC\ghmc_boundary.shp")
+            ghmc_gdf = ghmc_gdf.to_crs(epsg=4326)
+
+            # Station locations
+            if 'Latitude' in df.columns and 'Longitude' in df.columns:
+                stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
+
+                # Convert to GeoDataFrame for plotting
+                fig = px.scatter_mapbox(
+                    stations,
+                    lat="Latitude",
+                    lon="Longitude",
+                    hover_name="AWS_ID",
+                    zoom=9,
+                    mapbox_style="open-street-map",
+                    title="GHMC Boundary and Station Locations"
+                )
+
+                # Add GHMC polygon boundary overlay
+                for _, row in ghmc_gdf.iterrows():
+                    x, y = row.geometry.exterior.xy
+                    fig.add_scattermapbox(
+                        lon=x, lat=y, mode='lines',
+                        line=dict(width=2, color='red'),
+                        name='GHMC Boundary'
+                    )
+
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning("Latitude/Longitude columns not found in uploaded file.")
 
     # Rename and preprocess
     df.rename(columns={
