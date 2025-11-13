@@ -15,7 +15,7 @@ st.markdown("""
     <div style='background: linear-gradient(90deg, #002b5c 0%, #00509e 100%);
                 padding: 18px; border-radius: 10px; text-align: center; color: white;'>
         <h1 style='margin-bottom: 5px;'> Rainfall Analysis Tool for GHMC</h1>
-        <h5 style='margin-top: 0;'>Explore Hourly, Daily, and Event-Based Rainfall Patterns</h5>
+        <h5 style='margin-top: 0;'>Explore Hourly, Daily, and Event-Based Rainfall Data</h5>
     </div>
 """, unsafe_allow_html=True)
 
