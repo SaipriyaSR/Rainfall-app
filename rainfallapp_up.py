@@ -478,7 +478,8 @@ if uploaded_file is not None:
             st.markdown("##### Select Analysis Type")
             analysis_choice = st.radio(
                 "Choose analysis to display:",
-                [
+                [   
+                    "select",
                     "Rainy Hours per Day",
                     "Rainy Days per Month and Season",
                     "High-Intensity and Maximum Rainfall Events",
