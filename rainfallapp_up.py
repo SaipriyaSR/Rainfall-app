@@ -90,12 +90,11 @@ You can:
 - Run custom threshold queries  
 - Analyze trends station-wise  
 
-**Upload a CSV file** to begin 
-                (Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'').
+**Upload a CSV file** to begin.
                 
 """)
 
-uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file", type=['csv'])
+uploaded_file = st.sidebar.file_uploader("📂 Upload hourly rainfall CSV file with columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv'])
 
 # =========================
 # MAIN BODY
