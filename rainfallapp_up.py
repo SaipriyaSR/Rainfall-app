@@ -340,6 +340,7 @@ if uploaded_file is not None:
                                     color="AWS_ID", size="Total_Rain", hover_data=["Start", "End"],
                                     title="Duration vs Intensity of Events (≥ Threshold)")
                     st.plotly_chart(fig, use_container_width=True)
+        st.subheader(" Filtering the data")
         with st.expander("**Filtering by Station and Period**"):
             st.write("Filter the rainfall dataset by station and period")
 
@@ -388,7 +389,7 @@ if uploaded_file is not None:
                         'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude'
                     ]]
 
-                    st.subheader("📅 Daily Summary")
+                    st.subheader(" Daily Summary")
                     st.dataframe(daily_query, use_container_width=True)
 
                 elif analysis_type == "Event Summary":
@@ -415,7 +416,7 @@ if uploaded_file is not None:
                         'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude'
                     ]]
 
-                    st.subheader("🌧️ Event Summary")
+                    st.subheader(" Event Summary")
                     st.dataframe(events_query, use_container_width=True)
             else:
                 st.warning("No data found for the selected station and date range.")
