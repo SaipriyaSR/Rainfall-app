@@ -463,19 +463,19 @@ if uploaded_file is not None:
     # TAB 4 - STATION ANALYSIS
     # =========================
     with tab4:
-        st.subheader("Station-wise Rainfall Frequency and Intensity Analysis")
+        st.subheader("## Station-wise Rainfall Frequency and Intensity Analysis")
 
         # Layout: selection + menu on left, results on right
         left_col, right_col = st.columns([0.3, 1.7])
 
         with left_col:
             station_select = st.selectbox("Select a Station", sorted(df["AWS_ID"].unique()))
-            st.markdown("#### Station Metadata")
+            st.markdown("##### Station Metadata")
             meta_info = df[df["AWS_ID"] == station_select][['District', 'Mandal', 'Location', 'Circle']].drop_duplicates()
             st.dataframe(meta_info, hide_index=True, use_container_width=True)
 
             # --- Analysis menu ---
-            st.markdown("##### Select Analysis Type")
+            st.markdown("##### Analysis Types")
             analysis_choice = st.radio(
                 "Choose analysis to display:",
                 [   
