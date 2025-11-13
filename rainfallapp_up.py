@@ -88,24 +88,14 @@ st.markdown("""
         overflow-y: auto;
         padding-right: 10px;
     }
-    /* Adjust footer to align with main content, not full page width */
-    [data-testid="stSidebar"][aria-expanded="true"] ~ div[data-testid="stMain"] .footer {
-        margin-left: 300px;  /* match your sidebar width */
-        width: calc(100% - 300px);  /* adjust remaining width */
-    }
-
-    /* When sidebar is collapsed, expand footer to full width */
-    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] .footer {
-        margin-left: 0;
-        width: 100%;
-    }
+    
     /* Footer styling */
     .footer {
     text-align: center;
     padding: 10px;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 100vw !important;  /* force full viewport width */
     background-color: #f9f9f9;
     border-top: 1px solid #ddd;
     font-size: 14px;
