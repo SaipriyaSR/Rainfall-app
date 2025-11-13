@@ -173,13 +173,13 @@ if uploaded_file is not None:
         Hours_Rained=('Hourly_Rain', lambda x: (x > 0).sum())
     ).reset_index()
     # ---------- Reorder Columns ----------
-    daily = daily[['AWS_ID', 'Year', 'Month', 'Date',
-                'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained',
-                'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']]
+    
     daily['Daily_Intensity'] = daily.apply(
         lambda x: x['Daily_Rainfall'] / x['Hours_Rained'] if x['Hours_Rained'] > 0 else 0, axis=1
     )
-
+    daily = daily[['AWS_ID', 'Year', 'Month', 'Date',
+                'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained','Daily_Intensity', , 'Latitude', 'Longitude',
+                'District', 'Mandal', 'Location', 'Circle']]
     df_sorted = df.sort_values(['AWS_ID', 'DateTime']).copy()
     df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
     df_sorted['EventStart'] = (df_sorted['RainFlag'].diff().fillna(0) == 1).astype(int)
