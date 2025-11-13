@@ -350,6 +350,8 @@ if uploaded_file is not None:
                 start_date = st.date_input("Start Date", value=pd.to_datetime(df['Date']).min())
             with col3:
                 end_date = st.date_input("End Date", value=pd.to_datetime(df['Date']).max())
+            # Ensure Date column is in datetime format
+            df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 
             # Filter the dataset
             query_df = df[(df['AWS_ID'] == aws_selected) &
