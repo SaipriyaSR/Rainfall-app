@@ -178,7 +178,7 @@ if uploaded_file is not None:
         lambda x: x['Daily_Rainfall'] / x['Hours_Rained'] if x['Hours_Rained'] > 0 else 0, axis=1
     )
     daily = daily[['AWS_ID', 'Year', 'Month', 'Date',
-                'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained','Daily_Intensity', , 'Latitude', 'Longitude',
+                'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained','Daily_Intensity', 'Latitude', 'Longitude',
                 'District', 'Mandal', 'Location', 'Circle']]
     df_sorted = df.sort_values(['AWS_ID', 'DateTime']).copy()
     df_sorted['RainFlag'] = (df_sorted['Hourly_Rain'] > 0).astype(int)
