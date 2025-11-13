@@ -47,7 +47,7 @@ if uploaded_file is not None:
 
         with col1:
             st.subheader("Data Preview")
-            st.dataframe(df)
+            st.dataframe(df.head())
 
         with col2:
             st.subheader("GHMC Map and AWS Locations")
