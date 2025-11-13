@@ -109,7 +109,7 @@ st.markdown("""
 #st.sidebar.image("https://upload.wikimedia.org/wikipedia/en/thumb/1/18/GHMC_logo.png/200px-GHMC_logo.png", width=120)
 st.sidebar.header("About this App", width=200)
 st.sidebar.info("""
-This dashboard enables **interactive exploration** of rainfall data for GHMC stations.
+This app enables **interactive exploration** of rainfall data for GHMC stations.
 
 You can:
 - View hourly/daily rainfall summaries  
