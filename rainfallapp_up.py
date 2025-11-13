@@ -81,6 +81,11 @@ st.markdown("""
     font-size: 14px;
     color: #444;
     }
+    /* Expand main content when sidebar is hidden */
+    [data-testid="stSidebar"][aria-expanded="false"] ~ div[data-testid="stMain"] {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
 
     </style>
 """, unsafe_allow_html=True)
