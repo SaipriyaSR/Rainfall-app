@@ -566,7 +566,7 @@ else:
 # ---------- FOOTER ----------
 st.markdown("""
     <div class="footer">
-        Developed by <b>RAFT Research Group, Department of Civil Engineering, IIT Hyderabad</b>
+        Developed by IIT Hyderabad</b>
     </div>
 """, unsafe_allow_html=True)
 
