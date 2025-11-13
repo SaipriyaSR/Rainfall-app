@@ -126,6 +126,11 @@ if uploaded_file is not None:
                 fig = px.scatter_mapbox(stations, lat="Latitude", lon="Longitude",
                                         hover_name="AWS_ID", zoom=9, mapbox_style="open-street-map")#,
                                         #title="AWS Station Locations")
+                fig.update_layout(
+                margin=dict(l=10, r=10, t=10, b=10),
+                height=550,  # 🔹 Adjust to take up vertical space
+                mapbox=dict(center={"lat": stations["Latitude"].mean(),
+                                    "lon": stations["Longitude"].mean()}, zoom=10))
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning(" Latitude/Longitude columns not found in uploaded file.")
