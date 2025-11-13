@@ -124,8 +124,8 @@ if uploaded_file is not None:
             if {'Latitude', 'Longitude'}.issubset(df.columns):
                 stations = df[['AWS_ID', 'Latitude', 'Longitude']].drop_duplicates()
                 fig = px.scatter_mapbox(stations, lat="Latitude", lon="Longitude",
-                                        hover_name="AWS_ID", zoom=10, mapbox_style="open-street-map",
-                                        title="AWS Station Locations")
+                                        hover_name="AWS_ID", zoom=9, mapbox_style="open-street-map")#,
+                                        #title="AWS Station Locations")
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning(" Latitude/Longitude columns not found in uploaded file.")
