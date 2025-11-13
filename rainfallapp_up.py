@@ -573,7 +573,7 @@ if uploaded_file is not None:
                 events_sorted['Prev_End'] = events_sorted.groupby('AWS_ID')['End'].shift(1)
                 events_sorted['Prev_End_Date'] = events_sorted['Prev_End'].dt.date
 
-                # Calculate gap in hours only if on the same day
+                # Calculate gap in hours
                 events_sorted['Gap_hr'] = (events_sorted['Start'] - events_sorted['Prev_End']).dt.total_seconds() / 3600
                 events_sorted['Same_Day'] = events_sorted['Start'].dt.date == events_sorted['Prev_End_Date']
 
@@ -592,7 +592,22 @@ if uploaded_file is not None:
                     )
                     st.plotly_chart(fig, use_container_width=True)
                 else:
-                    st.info("No same-day event gaps found for this station.")       
+                    st.info("No same-day event gaps found for this station.")
+                    # If no gaps, create a dummy dataframe with Gap_hr = 0
+                    dummy_df = events_sorted[['AWS_ID', 'EventID', 'Start', 'End']].copy()
+                    dummy_df['Gap_hr'] = 0
+                    st.dataframe(dummy_df, use_container_width=True)
+
+                    # Optional: plot a single bar at 0
+                    fig = px.histogram(
+                        dummy_df, 
+                        x="Gap_hr", 
+                        nbins=1,
+                        title=f"No Event-to-Event Gaps (Same Day) - {station_select}",
+                        color_discrete_sequence=["#A6B1B8"]
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
+   
 
 else:
     st.info(" Please upload a CSV file to start the analysis.")
