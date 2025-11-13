@@ -30,8 +30,8 @@ st.markdown("""
         border-radius: 8px;
     }
     .stTabs [data-baseweb="tab"] {
-        font-size: 35px !important;
-        font-weight: 800 !important;
+        font-size: 45px !important;
+        font-weight: 900 !important;
         color: #002b5c !important;
     }
     /* DataFrame scrollbar hidden */
@@ -147,9 +147,9 @@ if uploaded_file is not None:
     # ---------- Tabs ----------
     tab1, tab2, tab3, tab4 = st.tabs([
         " **Data Summary**",
-        " Custom Queries",
-        " Visualization",
-        " Station Analysis"
+        " **Custom Queries**",
+        " **Visualization**",
+        " **Station Analysis**"
     ])
 
     # =========================
