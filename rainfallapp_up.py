@@ -245,7 +245,7 @@ if uploaded_file is not None:
 
     # ---- RIGHT COLUMN: Reactive Visualization ----
     with col2:
-        st.markdown("#### Quick Visualization")
+        st.markdown("##### Quick Visualization")
         plot_type = st.selectbox("Select plot type:", ["Box", "Bar", "Line", "Spatial Map"])
 
         # For Daily Rainfall Summary
