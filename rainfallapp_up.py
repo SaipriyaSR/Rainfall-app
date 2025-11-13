@@ -74,7 +74,7 @@ You can:
 - Analyze trends station-wise  
 
 **Upload a CSV file** to begin 
-                (Upload hourly rainfall dataset with columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'').
+                (Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'').
                 
 """)
 
