@@ -581,7 +581,7 @@ if uploaded_file is not None:
                     axis=1
                 )
 
-                st.dataframe(events_sorted[['AWS_ID', 'EventID', 'Date', 'Gap_hr']], use_container_width=True)
+                st.dataframe(events_sorted[['AWS_ID', 'EventID', 'Start', 'Gap_hr']], use_container_width=True)
 
                 # Plot histogram only for positive gaps
                 positive_gaps = events_sorted[events_sorted['Gap_hr'] > 0]
