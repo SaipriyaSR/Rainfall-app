@@ -38,6 +38,22 @@ st.markdown("""
     div[data-testid="stDataFrameResizable"] div[role="presentation"]::-webkit-scrollbar {
         display: none;
     }
+    /* Enable vertical scrolling for long tab content */
+    .stTabs [data-baseweb="tab-panel"] {
+        max-height: 80vh;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+
+    /* Footer styling */
+    .footer {
+        text-align: center;
+        padding: 15px;
+        margin-top: 30px;
+        font-size: 15px;
+        color: #555;
+        border-top: 1px solid #ddd;
+    }
     </style>
 """, unsafe_allow_html=True)
 
