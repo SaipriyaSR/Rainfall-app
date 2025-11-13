@@ -47,13 +47,17 @@ st.markdown("""
 
     /* Footer styling */
     .footer {
-        text-align: center;
-        padding: 15px;
-        margin-top: 30px;
-        font-size: 15px;
-        color: #555;
-        border-top: 1px solid #ddd;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f9f9f9;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #444;
     }
+
     </style>
 """, unsafe_allow_html=True)
 
