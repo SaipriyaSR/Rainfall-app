@@ -194,9 +194,7 @@ if uploaded_file is not None:
     ).reset_index()
 
     events['Average_Intensity'] = events['Total_Rain'] / events['Duration_hrs']
-    events = events[['AWS_ID', 'Year', 'Month', 'Date',
-                'EventID', 'Start', 'End','Duration_hrs','Total_Rain','Max_Hourly', 'Average_Intensity','Latitude', 'Longitude',
-                'District', 'Mandal', 'Location', 'Circle']]
+
     # ---------- Tabs ----------
     tab1, tab2, tab3, tab4 = st.tabs([
         " **Data Summary**",
