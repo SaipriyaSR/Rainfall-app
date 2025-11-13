@@ -80,14 +80,27 @@ if uploaded_file is not None:
                 )
 
                 # Add GHMC polygon boundary overlay
-                for _, row in ghmc_gdf.iterrows():
-                    x, y = row.geometry.exterior.xy
-                    fig.add_scattermapbox(
-                        lon=x, lat=y, mode='lines',
-                        line=dict(width=2, color='red'),
-                        name='GHMC Boundary'
-                    )
 
+
+                for _, row in ghmc_gdf.iterrows():
+                    geom = row.geometry
+                    if geom.geom_type == 'Polygon':
+                        x, y = geom.exterior.xy
+                        fig.add_scattermapbox(
+                            lon=x, lat=y, mode='lines',
+                            line=dict(width=2, color='red'),
+                            name='GHMC Boundary'
+                        )
+                    elif geom.geom_type == 'MultiPolygon':
+                        for polygon in geom.geoms:
+                            x, y = polygon.exterior.xy
+                            fig.add_scattermapbox(
+                                lon=x, lat=y, mode='lines',
+                                line=dict(width=2, color='red'),
+                                name='GHMC Boundary'
+                            )
+
+            
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning("Latitude/Longitude columns not found in uploaded file.")
