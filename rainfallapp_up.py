@@ -117,7 +117,7 @@ You can:
 - Run custom threshold queries  
 - Analyze data station-wise  
 
-**Upload a CSV file** to begin *(Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'", type=['csv'])*.
+**Upload a CSV file** to begin *(Columns: 'AWS_ID', 'Date_&_Time', 'Latitude', 'Longitude', 'Hourly__Rainfall_(mm)'")*.
                 
 """)
 
@@ -479,7 +479,7 @@ if uploaded_file is not None:
             analysis_choice = st.radio(
                 "Choose analysis to display:",
                 [   
-                    "select",
+                    "Select",
                     "Rainy Hours per Day",
                     "Rainy Days per Month and Season",
                     "High-Intensity and Maximum Rainfall Events",
