@@ -111,6 +111,8 @@ if uploaded_file is not None:
         else:
             st.error("Unsupported file format.")
             df = None
+    except Exception as e:
+        st.error(f"Error reading file: {e}")
     df.columns = df.columns.str.strip().str.replace('\n', ' ').str.replace(' ', '_')
 
     # ---------- Preview Section ----------
