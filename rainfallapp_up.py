@@ -48,7 +48,7 @@ if uploaded_file is not None:
 
         with col1:
             st.subheader("Data Preview")
-            st.dataframe(df)
+            st.dataframe(df.head(20))
 
         with col2:
             st.subheader("AWS Station Locations (OpenStreetMap)")
