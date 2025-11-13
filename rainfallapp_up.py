@@ -33,7 +33,7 @@ st.markdown("""
     .stTabs [data-baseweb="tab-list"] {
         gap: 25px;
         background-color: #f4f6f8;
-        padding: 10px;
+        padding: 5px;
         border-radius: 8px;
     }
     /* Individual Tabs */
