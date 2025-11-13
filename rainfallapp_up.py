@@ -172,7 +172,10 @@ if uploaded_file is not None:
         Max_Hourly_Rain=('Hourly_Rain', 'max'),
         Hours_Rained=('Hourly_Rain', lambda x: (x > 0).sum())
     ).reset_index()
-
+    # ---------- Reorder Columns ----------
+    daily = daily[['AWS_ID', 'Year', 'Month', 'Date',
+                'Daily_Rainfall', 'Max_Hourly_Rain', 'Hours_Rained',
+                'District', 'Mandal', 'Location', 'Circle', 'Latitude', 'Longitude']]
     daily['Daily_Intensity'] = daily.apply(
         lambda x: x['Daily_Rainfall'] / x['Hours_Rained'] if x['Hours_Rained'] > 0 else 0, axis=1
     )
