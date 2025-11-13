@@ -305,7 +305,7 @@ if uploaded_file is not None:
             st.dataframe(meta_info, hide_index=True, use_container_width=True)
 
             # --- Analysis menu ---
-            st.markdown("##Select Analysis Type")
+            st.markdown("## Select Analysis Type")
             analysis_choice = st.radio(
                 "Choose analysis to display:",
                 [
