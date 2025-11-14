@@ -204,7 +204,7 @@ if uploaded_file is not None:
     "**Visualization**",
     "**Station Analysis**"])
 
-tab1, tab2, tab3, tab4 = tabs
+    tab1, tab2, tab3, tab4 = tabs
 
 
     # =========================
