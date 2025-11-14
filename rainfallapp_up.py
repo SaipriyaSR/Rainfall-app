@@ -267,7 +267,7 @@ if uploaded_file is not None:
                                         size="Daily_Rainfall", hover_name="AWS_ID", mapbox_style="open-street-map",
                                         color_continuous_scale="turbo", title="Spatial Distribution of Daily Rainfall")
                 fig.update_layout(
-                margin=dict(l=10, r=10, t=10, b=10),
+                #margin=dict(l=10, r=10, t=10, b=10),
                 height=300,  # 🔹 Adjust to take up vertical space
                 mapbox=dict(center={"lat": stations["Latitude"].mean(),
                                     "lon": stations["Longitude"].mean()}, zoom=10))
