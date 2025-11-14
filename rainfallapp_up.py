@@ -265,7 +265,7 @@ if uploaded_file is not None:
                 spatial_avg = filtered_daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
                 fig = px.scatter_mapbox(spatial_avg, lat="Latitude", lon="Longitude", color="Daily_Rainfall",
                                         size="Daily_Rainfall", hover_name="AWS_ID", mapbox_style="open-street-map",
-                                        color_continuous_scale="virdis", title="Spatial Distribution of Daily Rainfall")
+                                        color_continuous_scale="turbo", title="Spatial Distribution of Daily Rainfall")
 
             st.plotly_chart(fig, use_container_width=True)
 
