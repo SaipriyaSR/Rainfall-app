@@ -211,84 +211,88 @@ if uploaded_file is not None:
     with tab1:
         st.subheader(" Rainfall Summary")
         st.info("View daily or event-level rainfall summaries with customizable thresholds.")
-        summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
+
+        summary_option = st.radio("Select summary type:",
+                                ["Daily Rainfall Summary", "Rain Events Summary"],
+                                horizontal=True)
 
         col1, col2 = st.columns([1.3, 1])
 
-    # ---- LEFT COLUMN: Data Filtering ----
-    with col1:
-        if summary_option == "Daily Rainfall Summary":
-            daily_threshold = st.number_input("Enter daily rainfall threshold (mm):", value=0.0)
+        # ---- LEFT COLUMN: Data Filtering ----
+        with col1:
+            if summary_option == "Daily Rainfall Summary":
+                daily_threshold = st.number_input("Enter daily rainfall threshold (mm):", value=0.0)
 
-            # Store results persistently in session_state
-            if st.button("Show Daily Summary"):
-                st.session_state['filtered_daily'] = daily[daily['Daily_Rainfall'] >= daily_threshold]
-                st.session_state['daily_threshold'] = daily_threshold
+                if st.button("Show Daily Summary"):
+                    st.session_state['filtered_daily'] = daily[daily['Daily_Rainfall'] >= daily_threshold]
+                    st.session_state['daily_threshold'] = daily_threshold
 
-            # Display stored results if available
-            if 'filtered_daily' in st.session_state:
-                st.success(f"Days with rainfall ≥ {st.session_state['daily_threshold']} mm: "
-                           f"{len(st.session_state['filtered_daily'])}")
-                st.dataframe(st.session_state['filtered_daily'])
+                if 'filtered_daily' in st.session_state:
+                    st.success(f"Days with rainfall ≥ {st.session_state['daily_threshold']} mm: "
+                            f"{len(st.session_state['filtered_daily'])}")
+                    st.dataframe(st.session_state['filtered_daily'])
 
-        else:
-            event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=0.0)
-
-            if st.button("Show Event Summary"):
-                st.session_state['filtered_events'] = events[events['Total_Rain'] >= event_thresh]
-                st.session_state['event_thresh'] = event_thresh
-
-            if 'filtered_events' in st.session_state:
-                st.success(f"Events with total rainfall ≥ {st.session_state['event_thresh']} mm: "
-                           f"{len(st.session_state['filtered_events'])}")
-                st.dataframe(st.session_state['filtered_events'])
-
-    # ---- RIGHT COLUMN: Reactive Visualization ----
-    with col2:
-        st.markdown("###### Quick Visualization")
-        plot_type = st.selectbox("Select plot type:", ["Box", "Bar", "Line", "Spatial Map"])
-
-        # For Daily Rainfall Summary
-        if summary_option == "Daily Rainfall Summary" and 'filtered_daily' in st.session_state:
-            filtered_daily = st.session_state['filtered_daily']
-
-            if plot_type == "Box":
-                fig = px.box(filtered_daily, x="Month", y="Daily_Rainfall", color="AWS_ID",
-                             title="Monthly Rainfall Distribution")
-            elif plot_type == "Bar":
-                fig = px.bar(filtered_daily, x="AWS_ID", y="Daily_Rainfall", color="Month",
-                             title="Rainfall by Station and Month")
-            elif plot_type == "Line":
-                fig = px.line(filtered_daily, x="Date", y="Daily_Rainfall", color="AWS_ID",
-                              title="Daily Rainfall Trends")
             else:
-                spatial_avg = filtered_daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
-                fig = px.scatter_mapbox(spatial_avg, lat="Latitude", lon="Longitude", color="Daily_Rainfall",
-                                        size="Daily_Rainfall", hover_name="AWS_ID", mapbox_style="open-street-map",
-                                        color_continuous_scale="Blues", title="Spatial Distribution of Daily Rainfall")
+                event_thresh = st.number_input("Enter event total rainfall threshold (mm):", value=0.0)
 
-            st.plotly_chart(fig, use_container_width=True)
+                if st.button("Show Event Summary"):
+                    st.session_state['filtered_events'] = events[events['Total_Rain'] >= event_thresh]
+                    st.session_state['event_thresh'] = event_thresh
 
-        # For Rain Events Summary
-        elif summary_option == "Rain Events Summary" and 'filtered_events' in st.session_state:
-            filtered_events = st.session_state['filtered_events']
+                if 'filtered_events' in st.session_state:
+                    st.success(f"Events with total rainfall ≥ {st.session_state['event_thresh']} mm: "
+                            f"{len(st.session_state['filtered_events'])}")
+                    st.dataframe(st.session_state['filtered_events'])
 
-            if plot_type == "Box":
-                fig = px.box(filtered_events, x="AWS_ID", y="Average_Intensity",
-                             title="Event Intensity Distribution Across Stations")
-            elif plot_type == "Bar":
-                fig = px.bar(filtered_events, x="AWS_ID", y="Total_Rain",
-                             title="Total Event Rainfall by Station")
-            elif plot_type == "Line":
-                fig = px.line(filtered_events, x="Start", y="Total_Rain", color="AWS_ID",
-                              title="Temporal Evolution of Events")
-            else:
-                spatial_ev = filtered_events.groupby(["AWS_ID", "Latitude", "Longitude"])["Total_Rain"].mean().reset_index()
-                fig = px.scatter_mapbox(spatial_ev, lat="Latitude", lon="Longitude", color="Total_Rain",
-                                        size="Total_Rain", hover_name="AWS_ID", mapbox_style="open-street-map",
-                                        color_continuous_scale="Blues", title="Spatial Distribution of Rain Events")
+        # ---- RIGHT COLUMN: Visualization ----
+        with col2:
+            st.markdown("###### Quick Visualization")
+            plot_type = st.selectbox("Select plot type:", ["Box", "Bar", "Line", "Spatial Map"])
 
-            st.plotly_chart(fig, use_container_width=True)
+            # DAILY
+            if summary_option == "Daily Rainfall Summary" and 'filtered_daily' in st.session_state:
+                filtered_daily = st.session_state['filtered_daily']
+
+                if plot_type == "Box":
+                    fig = px.box(filtered_daily, x="Month", y="Daily_Rainfall", color="AWS_ID",
+                                title="Monthly Rainfall Distribution")
+                elif plot_type == "Bar":
+                    fig = px.bar(filtered_daily, x="AWS_ID", y="Daily_Rainfall", color="Month",
+                                title="Rainfall by Station and Month")
+                elif plot_type == "Line":
+                    fig = px.line(filtered_daily, x="Date", y="Daily_Rainfall", color="AWS_ID",
+                                title="Daily Rainfall Trends")
+                else:
+                    spatial_avg = filtered_daily.groupby(["AWS_ID", "Latitude", "Longitude"])["Daily_Rainfall"].mean().reset_index()
+                    fig = px.scatter_mapbox(spatial_avg, lat="Latitude", lon="Longitude",
+                                            color="Daily_Rainfall", size="Daily_Rainfall",
+                                            hover_name="AWS_ID", mapbox_style="open-street-map",
+                                            color_continuous_scale="Blues",
+                                            title="Spatial Distribution of Daily Rainfall")
+                st.plotly_chart(fig, use_container_width=True)
+
+            # EVENTS
+            elif summary_option == "Rain Events Summary" and 'filtered_events' in st.session_state:
+                filtered_events = st.session_state['filtered_events']
+
+                if plot_type == "Box":
+                    fig = px.box(filtered_events, x="AWS_ID", y="Average_Intensity",
+                                title="Event Intensity Distribution Across Stations")
+                elif plot_type == "Bar":
+                    fig = px.bar(filtered_events, x="AWS_ID", y="Total_Rain",
+                                title="Total Event Rainfall by Station")
+                elif plot_type == "Line":
+                    fig = px.line(filtered_events, x="Start", y="Total_Rain", color="AWS_ID",
+                                title="Temporal Evolution of Events")
+                else:
+                    spatial_ev = filtered_events.groupby(["AWS_ID", "Latitude", "Longitude"])["Total_Rain"].mean().reset_index()
+                    fig = px.scatter_mapbox(spatial_ev, lat="Latitude", lon="Longitude",
+                                            color="Total_Rain", size="Total_Rain",
+                                            hover_name="AWS_ID", mapbox_style="open-street-map",
+                                            color_continuous_scale="Blues",
+                                            title="Spatial Distribution of Rain Events")
+                st.plotly_chart(fig, use_container_width=True)
+
     # =========================
     # TAB 2 - CUSTOM QUERIES
     # =========================
