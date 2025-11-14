@@ -198,17 +198,24 @@ if uploaded_file is not None:
                 'EventID', 'Start', 'End','Duration_hrs','Total_Rain','Max_Hourly', 'Average_Intensity','Latitude', 'Longitude',
                 'District', 'Mandal', 'Location', 'Circle']]
     # ---------- Tabs ----------
-    tab1, tab2, tab3, tab4 = st.tabs([
-        " **Data Summary**",
-        " **Custom Queries**",
-        " **Visualization**",
-        " **Station Analysis**"
-    ])
+    tabs = st.tabs([
+    "**Data Summary**",
+    "**Custom Queries**",
+    "**Visualization**",
+    "**Station Analysis**"])
+
+tab1, tab2, tab3, tab4 = tabs
+
 
     # =========================
     # TAB 1 - DATA SUMMARY
     # =========================
     with tab1:
+        if st.session_state.active_tab != "tab1":
+            if st.button("Load Data Summary", key="load_tab1"):
+                st.session_state.active_tab = "tab1"
+            else:
+                st.stop()
         st.subheader(" Rainfall Summary")
         st.info("View daily or event-level rainfall summaries with customizable thresholds.")
         summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
