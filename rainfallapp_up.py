@@ -286,7 +286,7 @@ if uploaded_file is not None:
                 spatial_ev = filtered_events.groupby(["AWS_ID", "Latitude", "Longitude"])["Total_Rain"].mean().reset_index()
                 fig = px.scatter_mapbox(spatial_ev, lat="Latitude", lon="Longitude", color="Total_Rain",
                                         size="Total_Rain", hover_name="AWS_ID", mapbox_style="open-street-map",
-                                        color_continuous_scale="Blues", title="Spatial Distribution of Rain Events")
+                                        color_continuous_scale="turbo", title="Spatial Distribution of Rain Events")
 
             st.plotly_chart(fig, use_container_width=True)
     # =========================
