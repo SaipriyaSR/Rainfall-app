@@ -209,7 +209,7 @@ if uploaded_file is not None:
     # TAB 1 - DATA SUMMARY
     # =========================
     with tab1:
-        st.subheader("### Rainfall Summary")
+        st.subheader("Rainfall Summary")
         st.info("View daily or event-level rainfall summaries with customizable thresholds.")
         summary_option = st.radio("Select summary type:", ["Daily Rainfall Summary", "Rain Events Summary"], horizontal=True)
 
